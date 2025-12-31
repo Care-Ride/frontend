@@ -8,9 +8,11 @@ import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import Handle from '../../assets/common/handle_black.svg';
 import Transportation from '../../assets/common/transportation_black.svg';
 import Record from '../../assets/common/record_black.svg';
+import Point from '../../assets/common/point_black.svg';
 import Setting from '../../assets/common/setting_black.svg';
 import TransportationGray from '../../assets/common/transportation_gray.svg';
 import RecordGray from '../../assets/common/record_gray.svg';
+import PointGray from '../../assets/common/point_gray.svg';
 import SettingGray from '../../assets/common/setting_gray.svg';
 import HandleGray from '../../assets/common/handle_gray.svg';
 
@@ -34,23 +36,23 @@ const navItems: {
 }[] = [
   {
     key: 'DrivingAction',
-    label: '운전 시작',
+    label: '운전',
     icon: { active: Handle, inactive: HandleGray },
   },
   {
     key: 'DrivingRecord',
-    label: '운전 기록',
+    label: '기록',
     icon: { active: Record, inactive: RecordGray },
   },
   {
     key: 'AlternativeTransportation',
-    label: '대체 이동',
+    label: '이동',
     icon: { active: Transportation, inactive: TransportationGray },
   },
   {
     key: 'Point',
     label: '포인트',
-    icon: { active: Transportation, inactive: TransportationGray },
+    icon: { active: Point, inactive: PointGray },
   },
   {
     key: 'Setting',
@@ -58,7 +60,7 @@ const navItems: {
     icon: { active: Setting, inactive: SettingGray },
   },
 ];
-const BAR_HEIGHT = 56;
+const BAR_HEIGHT = 77;
 
 const NavigationBar = ({
   state,
@@ -119,7 +121,7 @@ const NavigationBar = ({
             onPress={onPress}
             onLongPress={onLongPress}
           >
-            <IconComponent />
+            <IconComponent width={23} height={23} />
             <Label $active={isFocused}>{item.label}</Label>
           </NavItem>
         );
@@ -137,11 +139,13 @@ const Container = styled.View`
   right: 0;
   flex-direction: row;
   justify-content: space-evenly;
-  gap: 25px;
-  padding: 10px 0;
+  padding: 15px 9px;
   border-top-width: 1px;
   border-color: ${({ theme }) => theme.colors.gray100};
   background-color: ${({ theme }) => theme.colors.white};
+  border-radius: 30px;
+  elevation: 20;
+  shadow: 3px;
 `;
 
 const NavItem = styled.TouchableOpacity.attrs(() => ({
@@ -149,10 +153,13 @@ const NavItem = styled.TouchableOpacity.attrs(() => ({
   activeOpacity: 0.8,
 }))`
   align-items: center;
+  width: 20%;
 `;
 
 const Label = styled.Text<{ $active: boolean }>`
-  font-size: 10px;
-  margin-top: 4px;
+  font-size: ${({ theme }) => theme.scaleFont(13 * theme.fontScale)};
+
+  margin-top: 5px;
+  font-weight: 500;
   color: ${({ $active }) => ($active ? '#001830' : '#6D767F')};
 `;

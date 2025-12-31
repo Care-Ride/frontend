@@ -2,28 +2,28 @@ import React from 'react';
 import styled from 'styled-components/native';
 import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Arrow from '../../assets/common/arrow.svg';
+import Logo from '../../assets/common/logo_yellow.svg';
 
-const BackButton = () => {
+const HomeButton = () => {
   const navigation = useNavigation();
 
   return (
     <BackButtonContainer>
       <TouchableOpacity
-        onPress={() => navigation.goBack()}
+        onPress={() => navigation.navigate('Home')}
         hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
         style={{ padding: 0, alignItems: 'center' }}
         accessibilityRole="button"
-        accessibilityLabel="뒤로 가기"
+        accessibilityLabel="홈으로 가기"
       >
-        <Arrow />
-        <Text>뒤로가기</Text>
+        <Logo width={69} height={29.77} />
+        <Text>첫 화면으로</Text>
       </TouchableOpacity>
     </BackButtonContainer>
   );
 };
 
-export default BackButton;
+export default HomeButton;
 
 const BackButtonContainer = styled.View`
   flex-direction: row;
@@ -34,6 +34,6 @@ const BackButtonContainer = styled.View`
   background-color: white;
 `;
 const Text = styled.Text`
-  font-size: 10px;
+  font-size: ${({ theme }) => theme.scaleFont(10 * theme.fontScale)};
   margin-top: 3px;
 `;
