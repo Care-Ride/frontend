@@ -1,65 +1,65 @@
-import React from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components/native';
 import { TouchableOpacity, Alert } from 'react-native';
 // import { useAuth } from '../../AuthContext';
 import Logo from '../../assets/common/logo_yellow.svg';
 import Kakao from '../../assets/login/kakao.svg';
 import Naver from '../../assets/login/naver.svg';
+import Google from '../../assets/login/google.svg';
+
 import { useNavigation } from '@react-navigation/native';
 
-export default function LoginScreen() {
-  //   const { signInWithOAuth } = useAuth();
+import { api } from '../../api/api';
+import { useAuth } from '../../AuthContext';
+
+const LoginPage = () => {
+  const { signInWithOAuth } = useAuth();
   const navigation = useNavigation<any>();
   const handleGoogleLogin = async () => {
-    // try {
-    //   const signInObj = await signInWithOAuth('google');
-    //   // 로그인 성공 → 홈 화면으로 이동
-    //   navigation.navigate('LoginConsent', { obj: signInObj });
-    // } catch (err: any) {
-    //   console.error('Google login failed', err);
-    //   Alert.alert('로그인 실패', 'Google 로그인에 실패했습니다.');
-    // }
+    try {
+      const signInObj = await signInWithOAuth('google');
+      console.log('Google Login', signInObj);
+      // // 로그인 성공 → 홈 화면으로 이동
+      // navigation.navigate('LoginConsent', { obj: signInObj });
+    } catch (err: any) {
+      console.error('Google login failed', err);
+      Alert.alert('로그인 실패', 'Google 로그인에 실패했습니다.');
+    }
   };
   const handleKakaoLogin = async () => {
-    //카카오 로그인 코드 채워넣기
+    try {
+      const signInObj = await signInWithOAuth('kakao');
+      console.log('ddd', signInObj);
+    } catch (err: any) {
+      console.error('Kakao login failed', err);
+      Alert.alert('로그인 실패', 'Kakao 로그인에 실패했습니다.');
+    }
   };
-  const handleAppleLogin = async () => {
-    //애플 로그인 코드 채워넣기
-  };
-
-  // const handleEmailLogin = async () => {
-  //   try {
-  //     await signInWithPassword('test@example.com', 'password123');
-  //     navigation.replace('Home');
-  //   } catch (err: any) {
-  //     Alert.alert('로그인 실패', '이메일/비밀번호를 확인하세요.');
-  //   }
-  // };
 
   return (
-    <Layout>
+    <Container>
       <Center>
         <Logo />
-        <LogoText>내 손 안의 운전 도우미</LogoText>
-        <LoginText>지금 로그인하세요</LoginText>
+        <DescriptionText>내 손안의 안전 운전 도우미</DescriptionText>
+        <LogoText>운전 노하우</LogoText>
         <LoginContainer>
-          <ButtonContainer>
-            <TouchableOpacity onPress={handleGoogleLogin}>
-              <Kakao />
-            </TouchableOpacity>
+          <ButtonContainer onPress={handleKakaoLogin}>
+            <Kakao />
+            <LoginText>카카오톡으로 시작하기</LoginText>
           </ButtonContainer>
-          <ButtonContainer>
-            <TouchableOpacity onPress={handleAppleLogin}>
-              <Naver />
-            </TouchableOpacity>
+          <ButtonContainer onPress={handleGoogleLogin}>
+            <Google />
+            <LoginText>구글로 시작하기</LoginText>
           </ButtonContainer>
         </LoginContainer>
       </Center>
-    </Layout>
+    </Container>
   );
-}
+};
 
-const Layout = styled.View`
+export default LoginPage;
+
+const Container = styled.View`
   flex: 1;
   background-color: white;
 `;
@@ -70,27 +70,39 @@ const Center = styled.View`
   align-items: center;
 `;
 
-const LogoText = styled.Text`
-  font-size: 16px;
-  margin-top: 18px;
+const DescriptionText = styled.Text`
+  margin-top: 25px;
+  font-size: 24px;
+  font-weight: 700;
 `;
 
+const LogoText = styled.Text`
+  margin-top: 15px;
+  font-size: 32px;
+  font-weight: 800;
+`;
 const LoginContainer = styled.View`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   margin-top: 80px;
+  gap: 12px;
 `;
-const LoginText = styled.Text`
-  font-size: 13px;
-  color: ${({ theme }) => theme.colors.bluePrimary};
-  font-weight: 700;
-`;
-const ButtonContainer = styled.View`
+const ButtonContainer = styled.TouchableOpacity`
   display: flex;
   flex-direction: row;
-  gap: 25px;
-  margin: 20px;
+  justify-content: center;
+  align-items: center;
+
   background-color: ${({ theme }) => theme.colors.bluePrimary};
+  width: 345px;
+  height: 65px;
+  border-radius: 22px;
+  gap: 15px;
+`;
+
+const LoginText = styled.Text`
+  font-size: 22px;
+  color: ${({ theme }) => theme.colors.white};
 `;
