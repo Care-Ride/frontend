@@ -2,13 +2,15 @@
 import { AppRegistry } from 'react-native';
 import App from './App.tsx';
 import { name as appName } from './app.json';
-//import { AuthProvider } from './src/AuthContext';
+import { AuthProvider } from './src/AuthContext';
 //import messaging from '@react-native-firebase/messaging';
 //import notifee, { AndroidImportance } from '@notifee/react-native';
 
 import { Buffer } from 'buffer';
 
-//import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+import 'fast-text-encoding';
 
 // 중복 폴리필 방지
 // @ts-ignore
@@ -17,23 +19,23 @@ if (typeof global.Buffer === 'undefined') {
   global.Buffer = Buffer;
 }
 
-// export const queryClient = new QueryClient({
-//   defaultOptions: {
-//     queries: {
-//       retry: 1,
-//       gcTime: 5 * 60 * 1000,
-//     },
-//   },
-// });
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      gcTime: 5 * 60 * 1000,
+    },
+  },
+});
 
-// const Root = () => (
-//   <QueryClientProvider client={queryClient}>
-//     {/* <AuthProvider> */}
-//     <App />
-//     {/* </AuthProvider> */}
-//   </QueryClientProvider>
-// );
-const Root = () => <App />;
+const Root = () => (
+  <QueryClientProvider client={queryClient}>
+    {/* <AuthProvider> */}
+    <App />
+    {/* </AuthProvider> */}
+  </QueryClientProvider>
+);
+// const Root = () => <App />;
 
 // messaging().onNotificationOpenedApp(remoteMessage => {
 //   const route = remoteMessage?.data?.route;
