@@ -1,4 +1,6 @@
-export const theme = {
+import { scale, scaleVertical, scaleFont } from '../utils/screen';
+
+export const baseTheme = {
   root: {
     flex: 1,
     backgroundColor: '#ffffff',
@@ -24,4 +26,10 @@ export const theme = {
     appHeight: '100%',
     marginHorizontal: 'auto',
   },
+  scale,
+  scaleVertical,
+  scaleFont,
+  fontScale: 1,
 } as const;
+
+export type AppTheme = typeof baseTheme;
