@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">careride</string>
+    <string name="app_name">운전 노하우</string>
+     <string name="kakao_app_key">acbddc4d5052e26ad25b30429f48fddf</string>
 </resources>
