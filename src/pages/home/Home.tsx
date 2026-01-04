@@ -37,7 +37,7 @@ const Home = () => {
       <Scroll
         contentContainerStyle={{
           paddingHorizontal: HORIZONTAL_PADDING,
-          paddingBottom: 40,
+          paddingBottom: 100,
           justifyContent: 'center',
         }}
       >
@@ -144,7 +144,7 @@ const Scroll = styled.ScrollView.attrs({})``;
 
 const Header = styled.View`
   width: 100%;
-  margin-top: 100px;
+  margin-top: 75px;
   position: relative;
 `;
 
