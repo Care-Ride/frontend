@@ -14,3 +14,10 @@ export const addMonthsToYearMonth = (ym: string, delta: number) => {
   const mm = String(d.getMonth() + 1).padStart(2, '0');
   return `${yy}-${mm}`;
 };
+
+export const formatYearMonthKR = (ym: string) => {
+  const [y, m] = ym.split('-');
+  const monthNum = Number(m);
+  if (!y || Number.isNaN(monthNum)) return ym;
+  return `${y}년 ${monthNum}월`;
+};

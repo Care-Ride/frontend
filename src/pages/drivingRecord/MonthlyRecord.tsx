@@ -7,7 +7,11 @@ import MonthlyList from '../../components/common/MonthlyList';
 import StarFilled from '../../assets/drivingRecord/star_filled.svg';
 import StarEmpty from '../../assets/drivingRecord/star_empty.svg';
 import { getMonthlyDrive } from '../../api/driving-controller';
-import { getCurrentYearMonth, addMonthsToYearMonth } from '../../utils/date';
+import {
+  getCurrentYearMonth,
+  addMonthsToYearMonth,
+  formatYearMonthKR,
+} from '../../utils/date';
 
 type MonthlyData = {
   month: number;
@@ -21,11 +25,19 @@ const MonthlyRecord = () => {
   const [name, setName] = useState('이승진');
   const [yearMonth, setYearMonth] = useState(getCurrentYearMonth());
   const [monthlyData, setMonthlyData] = useState<MonthlyData | null>(null);
+  const currentYearMonth = getCurrentYearMonth();
+
+  const yearMonthKR = formatYearMonthKR(yearMonth);
 
   const handlePrevMonth = () =>
     setYearMonth(prev => addMonthsToYearMonth(prev, -1));
+
+  //현재 달 이후로는 못넘어가도록
   const handleNextMonth = () =>
-    setYearMonth(prev => addMonthsToYearMonth(prev, 1));
+    setYearMonth(prev => {
+      if (prev >= currentYearMonth) return prev;
+      return addMonthsToYearMonth(prev, 1);
+    });
 
   const readMonthlyDrive = async () => {
     try {
@@ -81,11 +93,13 @@ const MonthlyRecord = () => {
         <ScoreContainer>
           <Score>{monthlyData?.avgScore}점</Score>
           <Description>
-            {name}님은 {yearMonth} 모범 운전자예요
+            {monthlyData?.avgScore != null && monthlyData.avgScore >= 80
+              ? `${formatYearMonthKR} 모범 운전자입니다`
+              : '안전운전, 조금 더 분발하세요!'}
           </Description>
         </ScoreContainer>
         <MonthlyList
-          yearMonth={yearMonth}
+          yearMonth={yearMonthKR}
           onPrevMonth={handlePrevMonth}
           onNextMonth={handleNextMonth}
           rows={rows}
