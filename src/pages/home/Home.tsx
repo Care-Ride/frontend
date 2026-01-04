@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions } from 'react-native';
 import styled from 'styled-components/native';
 
@@ -10,6 +10,7 @@ import Setting from '../../assets/common/setting_yellow.svg';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Car from '../../assets/drivingRecord/car.svg';
+import { getMember } from '../../api/member-controller';
 
 const { width } = Dimensions.get('window');
 
@@ -32,6 +33,16 @@ const Home = () => {
   const navigation = useNavigation();
   const route = useRoute<any>();
 
+  const [nickname, setNickname] = useState('');
+
+  const readMember = async () => {
+    const response = await getMember();
+    setNickname(response?.data.data.nickname);
+  };
+  useEffect(() => {
+    readMember();
+  }, []);
+
   return (
     <SafeAreaView style={{ backgroundColor: 'white', flex: 1 }}>
       <Scroll
@@ -43,7 +54,7 @@ const Home = () => {
       >
         <Header>
           <DateText>{dateText}</DateText>
-          <Greeting>안녕하세요 운전자 님, 무엇을 시작할까요?</Greeting>
+          <Greeting>안녕하세요 {nickname} 님, 무엇을 시작할까요?</Greeting>
 
           <RightIconWrapper>
             <Car />
