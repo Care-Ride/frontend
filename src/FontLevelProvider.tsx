@@ -24,7 +24,7 @@ const STORAGE_KEY = 'fontLevel';
 export const FontLevelProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [level, setLevelState] = useState<number>(3);
+  const [level, setLevelState] = useState<number>(4);
 
   // 앱 시작 시 저장된 레벨 불러오기
   useEffect(() => {
@@ -38,7 +38,7 @@ export const FontLevelProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   const setLevel = (next: number) => {
-    const clamped = Math.min(5, Math.max(1, next));
+    const clamped = Math.min(6, Math.max(1, next));
     setLevelState(clamped);
     AsyncStorage.setItem(STORAGE_KEY, String(clamped));
   };

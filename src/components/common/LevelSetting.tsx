@@ -17,7 +17,7 @@ type LevelSettingScreenProps = {
 export const LevelSetting: React.FC<LevelSettingScreenProps> = ({
   level,
   minLevel = 1,
-  maxLevel = 5,
+  maxLevel = 6,
   onChangeLevel,
   onTestPress,
   Icon,
