@@ -103,10 +103,10 @@ const Withdraw = () => {
             '로그아웃이 완료되면 자동으로\n로그인 화면으로 넘어갑니다.',
           ]}
           badgeIcon={<Logout />}
-          confirmText="아니오"
-          cancelText="예"
-          onConfirm={closeWithdrawModal}
-          onCancel={handleWithdrawConfirm}
+          confirmText="예"
+          cancelText="아니오"
+          onConfirm={handleWithdrawConfirm}
+          onCancel={closeWithdrawModal}
           onRequestClose={closeWithdrawModal}
         />
         <SimpleInfoModal
