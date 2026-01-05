@@ -53,8 +53,7 @@ const Container = styled.TouchableOpacity<{ $disabled?: boolean }>`
   align-items: center;
   border-radius: ${({ theme }) => theme.scale(33)}px;
   background-color: ${({ theme, $disabled }) =>
-    $disabled ? theme.colors.gray200 : theme.colors.bluePrimary};
-  opacity: ${({ $disabled }) => ($disabled ? 0.5 : 1)};
+    $disabled ? theme.colors.grayPrimary : theme.colors.bluePrimary};
 `;
 const SmallContainer = styled.TouchableOpacity<{ $disabled?: boolean }>`
   position: absolute;
@@ -71,7 +70,7 @@ const SmallContainer = styled.TouchableOpacity<{ $disabled?: boolean }>`
 
 const ButtonText = styled.Text<{ $disabled?: boolean }>`
   color: ${({ theme, $disabled }) =>
-    $disabled ? theme.colors.gray500 : theme.colors.white};
+    $disabled ? theme.colors.white : theme.colors.white};
   font-size: ${({ theme }) => theme.scaleFont(14)}px;
   font-weight: 600;
 `;

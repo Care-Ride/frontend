@@ -109,5 +109,5 @@ const DangerTextContainer = styled.TouchableOpacity`
 
 const DestinationText = styled.Text`
   font-size: ${({ theme }) => theme.scaleFont(14 * theme.fontScale)};
-  color: #a0a0a0;
+  color: ${({ theme }) => theme.colors.bluePrimary};
 `;
