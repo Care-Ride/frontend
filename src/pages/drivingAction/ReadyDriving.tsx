@@ -55,7 +55,7 @@ const ReadyDriving = () => {
             <DestinationText>{destination}</DestinationText>
           </DestinationInputWrapper>
         </DestinationContainer>
-        <StartButton onPress={handleStartDriving}>
+        <StartButton onPress={handleStartDriving} accessibilityRole="button">
           <ButtonText>운전 시작하기</ButtonText>
         </StartButton>
       </Container>

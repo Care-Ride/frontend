@@ -20,6 +20,7 @@ const StartDriving = () => {
               navigation.navigate('SearchDestination' as never);
             }}
             activeOpacity={0.8}
+            accessibilityLabel="목적지 입력하러 가기 버튼"
           >
             <PlaceholderText>목적지를 입력해주세요</PlaceholderText>
             <SearchIconWrapper>
@@ -29,6 +30,7 @@ const StartDriving = () => {
         </DestinationContainer>
         <StartButton
           onPress={() => navigation.navigate('BasicRuleBelt' as never)}
+          accessibilityRole="button"
         >
           <ButtonText>목적지 없이 운전하기</ButtonText>
         </StartButton>

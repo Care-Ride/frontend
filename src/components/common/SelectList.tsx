@@ -33,6 +33,7 @@ const SelectList: React.FC<SettingSectionProps> = ({
             onPress={option.onPress}
             activeOpacity={0.8}
             disabled={!option.onPress}
+            accessibilityLabel={`${option.label} 선택 버튼`}
           >
             <SelectText>선택</SelectText>
           </SelectButton>

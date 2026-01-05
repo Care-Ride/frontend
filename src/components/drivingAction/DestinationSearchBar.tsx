@@ -27,6 +27,8 @@ const DestinationSearchBar: React.FC<Props> = ({
         placeholderTextColor="#A0A0A0"
         returnKeyType="search"
         onSubmitEditing={e => onSubmit(e.nativeEvent.text)}
+        accessibilityLabel="목적지 입력창"
+        accessibilityRole="search"
       />
       <SearchButton onPress={() => onSubmit(value)} activeOpacity={0.8}>
         <Search />

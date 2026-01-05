@@ -57,13 +57,19 @@ const MyPoint = () => {
               <Point>{point}P</Point>
             </PointWrapper>
             <ButtonContainer>
-              <Button onPress={() => navigation.navigate('PointList' as any)}>
+              <Button
+                onPress={() => navigation.navigate('PointList' as any)}
+                accessibilityLabel="내역 보기 버튼"
+                accessibilityHint="포인트 적립 및 사용 내역 화면으로 이동합니다"
+              >
                 <ButtonText>내역보기</ButtonText>
               </Button>
               <Button
                 onPress={() =>
                   navigation.navigate('UsePoint' as any, { point })
                 }
+                accessibilityLabel="사용하기 버튼"
+                accessibilityHint={`현재 ${point}포인트를 사용할 수 있는 상품 목록으로 이동합니다`}
               >
                 <ButtonText>사용하기</ButtonText>
               </Button>
@@ -71,6 +77,8 @@ const MyPoint = () => {
             <ButtonContainer>
               <GiftButton
                 onPress={() => navigation.navigate('ReceivedGift' as any)}
+                accessibilityLabel="선물함 버튼"
+                accessibilityHint="선물함 화면으로 이동합니다"
               >
                 <Gift />
                 <ButtonText>선물함</ButtonText>

@@ -26,11 +26,17 @@ const MonthlyList: React.FC<MonthlyListProps> = ({
     <SectionContainer>
       <SectionHeaderContainer>
         <MonthNav>
-          <ArrowButton onPress={onPrevMonth}>
+          <ArrowButton
+            onPress={onPrevMonth}
+            accessibilityLabel="이전 달 조회 버튼"
+          >
             <ArrowLeft />
           </ArrowButton>
           <SectionTitle>{yearMonth}</SectionTitle>
-          <ArrowButton onPress={onNextMonth}>
+          <ArrowButton
+            onPress={onNextMonth}
+            accessibilityLabel="다음 달 조회 버튼"
+          >
             <ArrowRight />
           </ArrowButton>
         </MonthNav>

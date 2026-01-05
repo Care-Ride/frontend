@@ -49,7 +49,7 @@ export const SimpleInfoModal = ({
             ))}
           </BodyContainer>
 
-          <ConfirmButton onPress={onConfirm}>
+          <ConfirmButton onPress={onConfirm} accessibilityRole="button">
             <ConfirmText>{confirmText}</ConfirmText>
           </ConfirmButton>
         </Card>
@@ -96,10 +96,16 @@ export const ActionModal = ({
           </BodyContainer>
 
           <ButtonContainer>
-            <CancelButton onPress={onCancel}>
+            <CancelButton
+              onPress={onCancel}
+              accessibilityLabel={`${cancelText} 버튼`}
+            >
               <CancelText>{cancelText}</CancelText>
             </CancelButton>
-            <ConfirmButton onPress={onConfirm}>
+            <ConfirmButton
+              onPress={onConfirm}
+              accessibilityLabel={`${confirmText} 버튼`}
+            >
               <ConfirmText>{confirmText}</ConfirmText>
             </ConfirmButton>
           </ButtonContainer>

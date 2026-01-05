@@ -40,6 +40,7 @@ const UsePointList: React.FC<MonthlyListProps> = ({ point, rows }) => {
                     $disabled={isDisabled}
                     disabled={isDisabled}
                     activeOpacity={0.7}
+                    accessibilityRole="button"
                   >
                     <BuyButtonText $disabled={isDisabled}>
                       {row.status}

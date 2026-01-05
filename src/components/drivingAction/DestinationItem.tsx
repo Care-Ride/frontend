@@ -23,7 +23,11 @@ const DestinationItem: React.FC<Props> = ({ item, onSelect }) => {
           <Address numberOfLines={2}>{item.address}</Address>
         </TextBox>
 
-        <SelectButton onPress={() => onSelect(item)} activeOpacity={0.8}>
+        <SelectButton
+          onPress={() => onSelect(item)}
+          activeOpacity={0.8}
+          accessibilityRole="button"
+        >
           <SelectText>선택</SelectText>
         </SelectButton>
       </Row>

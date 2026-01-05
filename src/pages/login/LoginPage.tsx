@@ -43,11 +43,17 @@ const LoginPage = () => {
         <DescriptionText>내 손안의 안전 운전 도우미</DescriptionText>
         <LogoText>운전 노하우</LogoText>
         <LoginContainer>
-          <ButtonContainer onPress={handleKakaoLogin}>
+          <ButtonContainer
+            onPress={handleKakaoLogin}
+            accessibilityRole="button"
+          >
             <Kakao />
             <LoginText>카카오톡으로 시작하기</LoginText>
           </ButtonContainer>
-          <ButtonContainer onPress={handleGoogleLogin}>
+          <ButtonContainer
+            onPress={handleGoogleLogin}
+            accessibilityRole="button"
+          >
             <Google />
             <LoginText>구글로 시작하기</LoginText>
           </ButtonContainer>

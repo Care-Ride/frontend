@@ -19,6 +19,7 @@ export const BottomButton = ({
       activeOpacity={disabled ? 1 : 0.7}
       $disabled={disabled}
       accessibilityState={{ disabled }}
+      accessibilityRole="button"
     >
       <ButtonText $disabled={disabled}>{text}</ButtonText>
     </Container>

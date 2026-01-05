@@ -68,6 +68,7 @@ const Home = () => {
               activeOpacity={0.8}
               onPress={() => navigation.navigate('DrivingRecord' as never)}
               style={{ paddingBottom: 40, paddingRight: 40 }}
+              accessibilityLabel="기록 탭으로 가기 버튼"
             >
               <IconWrap>
                 <Record />
@@ -81,11 +82,12 @@ const Home = () => {
               }
               activeOpacity={0.8}
               style={{ paddingBottom: 40, paddingLeft: 40 }}
+              accessibilityLabel="이동 수단으로 가기 버튼"
             >
               <IconWrap>
                 <Transportation />
               </IconWrap>
-              <TileLabel>이동</TileLabel>
+              <TileLabel>이동 수단</TileLabel>
             </Tile>
           </Row>
 
@@ -94,6 +96,7 @@ const Home = () => {
               onPress={() => navigation.navigate('Point' as never)}
               activeOpacity={0.8}
               style={{ paddingTop: 40, paddingRight: 40 }}
+              accessibilityLabel="포인트로 가기 버튼"
             >
               <IconWrap>
                 <Point />
@@ -105,6 +108,7 @@ const Home = () => {
               onPress={() => navigation.navigate('Setting' as never)}
               activeOpacity={0.8}
               style={{ paddingTop: 40, paddingLeft: 40 }}
+              accessibilityLabel="설정으로 가기 버튼"
             >
               <IconWrap>
                 <Setting />
@@ -116,6 +120,7 @@ const Home = () => {
           <DiamondButton
             onPress={() => navigation.navigate('DrivingAction' as never)}
             activeOpacity={0.9}
+            accessibilityLabel="운전으로 가기 버튼"
           >
             <Diamond style={{ transform: [{ rotate: '45deg' }] }}>
               <DiamondInner style={{ transform: [{ rotate: '-45deg' }] }}>
@@ -132,6 +137,7 @@ const Home = () => {
         <GuideButton
           activeOpacity={0.9}
           onPress={() => navigation.navigate('Manual' as never)}
+          accessibilityRole="button"
         >
           <GuideText>사용법{'\n'}안내</GuideText>
         </GuideButton>
@@ -141,7 +147,10 @@ const Home = () => {
           <PolicyText>이용약관</PolicyText>
         </PolicyButton> */}
 
-        <PolicyButton onPress={() => navigation.navigate('Privacy' as never)}>
+        <PolicyButton
+          onPress={() => navigation.navigate('Privacy' as never)}
+          accessibilityRole="button"
+        >
           <PolicyText>개인정보처리방침</PolicyText>
         </PolicyButton>
       </PolicyContainer>

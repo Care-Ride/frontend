@@ -34,11 +34,11 @@ export const LevelSetting: React.FC<LevelSettingScreenProps> = ({
   return (
     <Container>
       <LevelContainer>
-        <PlusMinusButton onPress={handleMinus}>
+        <PlusMinusButton onPress={handleMinus} accessibilityLabel="줄이기 버튼">
           <ButtonText>-</ButtonText>
         </PlusMinusButton>
         <LevelText>{level}단계</LevelText>
-        <PlusMinusButton onPress={handlePlus}>
+        <PlusMinusButton onPress={handlePlus} accessibilityLabel="키우기 버튼">
           <ButtonText>+</ButtonText>
         </PlusMinusButton>
       </LevelContainer>
