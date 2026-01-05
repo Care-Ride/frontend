@@ -124,11 +124,7 @@ const BuyContainer = styled.View`
 
 const BuyButton = styled.TouchableOpacity<{ $disabled: boolean }>`
   border-radius: 33px;
-<<<<<<< HEAD
   background-color: ${({ $disabled }) => ($disabled ? '#6D767F' : '#F8C129')};
-=======
-  background-color: ${({ $disabled }) => ($disabled ? '#A0A0A0' : '#F8C129')};
->>>>>>> 55c96141d0db1b649cfea577f2272d87643ab0a1
   padding: 3px 12px;
 `;
 
