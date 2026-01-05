@@ -64,6 +64,8 @@ const EnterCode = () => {
   const [isVerified, setIsVerified] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
 
+  const [codeError, setCodeError] = useState<string>('');
+
   const navigation = useNavigation();
 
   const isValidCode = code.trim().length === 6;
@@ -82,6 +84,7 @@ const EnterCode = () => {
     if (!isValidCode || isVerifying) return;
 
     setIsVerifying(true);
+    setCodeError('');
     try {
       await postLinkConnect(code);
       setIsVerified(true);
@@ -113,6 +116,8 @@ const EnterCode = () => {
         });
         return;
       }
+
+      setCodeError('* 코드가 일치하지 않습니다');
 
       setResultModal({
         visible: true,
@@ -194,6 +199,7 @@ const EnterCode = () => {
               onChangeText={v => {
                 setCode(v);
                 setIsVerified(false);
+                setCodeError('');
               }}
               keyboardType="number-pad"
               maxLength={6}
@@ -216,6 +222,9 @@ const EnterCode = () => {
               </VerifyButtonText>
             </VerifyButton>
           </CodeInputContainer>
+          {codeError.length > 0 && (
+            <ErrorText accessibilityRole="text">{codeError}</ErrorText>
+          )}
         </CodeContainer>
 
         <CodeContainer>
@@ -359,6 +368,15 @@ const CodeInputContainer = styled.View`
   border-radius: 22px;
   background-color: #feefd2;
   border: 1px solid ${({ theme }) => theme.colors.yellowPrimary};
+`;
+
+const ErrorText = styled.Text`
+  margin-top: -6px;
+  margin-bottom: 10px;
+  margin-left: 6px;
+  font-size: ${({ theme }) => theme.scaleFont(13 * theme.fontScale)};
+  color: #d32f2f;
+  font-weight: 600;
 `;
 
 const CodeInput = styled.TextInput`
