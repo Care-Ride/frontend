@@ -189,7 +189,7 @@ const EnterCode = () => {
 
           <CodeInputContainer>
             <CodeInput
-              placeholder="6자리 인증코드를 입력해주세요"
+              placeholder="6자리 인증코드 입력"
               value={code}
               onChangeText={v => {
                 setCode(v);
@@ -203,6 +203,7 @@ const EnterCode = () => {
               onPress={handleVerify}
               disabled={!isValidCode || isVerifying || isVerified}
               activeOpacity={0.8}
+              accessibilityRole="button"
             >
               <VerifyButtonText
                 disabled={!isValidCode || isVerifying || isVerified}
@@ -227,7 +228,7 @@ const EnterCode = () => {
             <SelectText hasValue={!!relationType}>
               {relationType
                 ? RELATION_LABEL[relationType]
-                : '운전자와의 관계를 선택해주세요'}
+                : '운전자와의 관계 선택'}
             </SelectText>
             <Chevron>▾</Chevron>
           </SelectContainer>
@@ -249,7 +250,7 @@ const EnterCode = () => {
           <Label>운전자 성함</Label>
           <CodeInputContainer>
             <CodeInput
-              placeholder="운전자의 성함을 입력해주세요"
+              placeholder="운전자 성함 입력"
               value={name}
               onChangeText={setName}
               maxLength={20}
