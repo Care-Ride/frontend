@@ -3,12 +3,13 @@ import styled from 'styled-components/native';
 import HomeButton from '../../components/common/HomeButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SelectList from '../../components/common/SelectList';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import MissionList from '../../components/point/MissionList';
 import { ScrollView } from 'react-native';
 import { getMissions } from '../../api/mission-controller';
 import { getPointsBalance } from '../../api/mission-controller';
 import { MISSIONS, MissionDetail } from '../../constants/missions';
+import Gift from '../../assets/point/gift.svg';
 
 const MyPoint = () => {
   const navigation = useNavigation();
@@ -59,9 +60,21 @@ const MyPoint = () => {
               <Button onPress={() => navigation.navigate('PointList' as any)}>
                 <ButtonText>내역보기</ButtonText>
               </Button>
-              <Button>
+              <Button
+                onPress={() =>
+                  navigation.navigate('UsePoint' as any, { point })
+                }
+              >
                 <ButtonText>사용하기</ButtonText>
               </Button>
+            </ButtonContainer>
+            <ButtonContainer>
+              <GiftButton
+                onPress={() => navigation.navigate('ReceivedGift' as any)}
+              >
+                <Gift />
+                <ButtonText>선물함</ButtonText>
+              </GiftButton>
             </ButtonContainer>
           </PointContainer>
 
@@ -116,6 +129,17 @@ const Button = styled.TouchableOpacity`
 const ButtonText = styled.Text`
   font-size: ${({ theme }) => theme.scaleFont(18 * theme.fontScale)};
   font-weight: 500;
+`;
+
+const GiftButton = styled.TouchableOpacity`
+  flex-direction: row;
+  width: 100%;
+  padding: 10px 0;
+  background-color: ${({ theme }) => theme.colors.yellowPrimary};
+  border-radius: 33px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 `;
 
 const Label = styled.Text`

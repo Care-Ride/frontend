@@ -45,6 +45,8 @@ export type AlternativeTransportationStackParamList = {
 export type PointStackParamList = {
   MyPoint: undefined;
   PointList: undefined;
+  UsePoint: undefined;
+  ReceivedGift: undefined;
 };
 
 export type SettingStackParamList = {
