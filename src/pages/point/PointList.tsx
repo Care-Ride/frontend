@@ -4,7 +4,11 @@ import BackButton from '../../components/common/BackButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MonthlyList from '../../components/common/MonthlyList';
 import { getPointsHistory } from '../../api/mission-controller';
-import { getCurrentYearMonth, addMonthsToYearMonth } from '../../utils/date';
+import {
+  getCurrentYearMonth,
+  addMonthsToYearMonth,
+  formatYearMonthKR,
+} from '../../utils/date';
 
 type PointsHistoryItem = {
   amount: number;
@@ -17,6 +21,7 @@ const PointList = () => {
   const [yearMonth, setYearMonth] = useState<string>(getCurrentYearMonth());
   const [pointsHistory, setPointsHistory] = useState<PointsHistoryItem[]>([]);
 
+  const yearMonthKR = formatYearMonthKR(yearMonth);
   const handlePrevMonth = () =>
     setYearMonth(prev => addMonthsToYearMonth(prev, -1));
   const handleNextMonth = () =>
@@ -65,7 +70,7 @@ const PointList = () => {
       <Container>
         <Title>포인트 내역 보기</Title>
         <MonthlyList
-          yearMonth={yearMonth}
+          yearMonth={yearMonthKR}
           onPrevMonth={handlePrevMonth}
           onNextMonth={handleNextMonth}
           rows={rows}
