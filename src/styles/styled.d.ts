@@ -15,6 +15,7 @@ declare module 'styled-components/native' {
       blueSecondary: '#93DAE5';
       yellowPrimary: '#F8C129';
       yellowSecondary: '#FEEFD2';
+      grayPrimary: '#6D767F';
       white: '#ffffff';
       black: '#000000';
       gray100: '#EFEFEF';

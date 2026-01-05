@@ -40,6 +40,7 @@ const FirstFontSetting = () => {
         />
         <LevelSetting
           level={localLevel}
+          levelControl={true}
           onChangeLevel={setLocalLevel}
           onTestPress={handleTest}
           preview={

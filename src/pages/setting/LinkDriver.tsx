@@ -81,13 +81,13 @@ const LinkDriver = () => {
   }, [linkedName]);
 
   const linkOptions = useMemo(() => {
-    const opts = [
-      {
+    const opts = [];
+    if (!isLinked) {
+      opts.push({
         label: `${roleName} 연동하기`,
         onPress: handleLinkPress,
-      },
-    ];
-
+      });
+    }
     if (isLinked) {
       opts.push({
         label: `${roleName} 연동 해제하기`,

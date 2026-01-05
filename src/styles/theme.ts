@@ -12,6 +12,7 @@ export const baseTheme = {
     blueSecondary: '#93DAE5',
     yellowPrimary: '#F8C129',
     yellowSecondary: '#FEEFD2',
+    grayPrimary: '#6D767F',
     gray100: '#EFEFEF',
     gray200: '#D4D4D4',
     gray300: '#B6B6B6',
