@@ -61,7 +61,7 @@ const SettingDone = () => {
         </BodyText>
       </BodyContainer>
 
-      <ConfirmButton onPress={createSetting}>
+      <ConfirmButton onPress={createSetting} accessibilityRole="button">
         <ConfirmText>확인</ConfirmText>
       </ConfirmButton>
     </SafeAreaView>

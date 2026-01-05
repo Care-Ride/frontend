@@ -130,12 +130,18 @@ const SelectTransportationComponent = () => {
   };
   return (
     <SelectButtonContainer>
-      <SelectButton onPress={openSubstituteModal}>
+      <SelectButton
+        onPress={openSubstituteModal}
+        accessibilityLabel="대리운전 선택 버튼"
+      >
         <Driver />
         <ButtonText>대리운전</ButtonText>
       </SelectButton>
 
-      <SelectButton onPress={openTaxiModal}>
+      <SelectButton
+        onPress={openTaxiModal}
+        accessibilityLabel="콜택시 선택 버튼"
+      >
         <Taxi />
         <ButtonText>콜택시</ButtonText>
       </SelectButton>

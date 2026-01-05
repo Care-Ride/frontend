@@ -73,6 +73,7 @@ const GetCode = () => {
               disabled={remaining === 0}
               onPress={createLinkGenerate}
               activeOpacity={0.7}
+              accessibilityRole="button"
             >
               <RefreshButtonText>코드 새로 생성하기</RefreshButtonText>
             </RefreshButton>

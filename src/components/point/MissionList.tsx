@@ -49,7 +49,10 @@ const MissionList: React.FC<MissionProps> = ({ missions }) => {
               <Point />
               <PointText>{mission.rewardPoint}P</PointText>
             </PointWrapper>
-            <Button onPress={() => openDetailModal(mission)}>
+            <Button
+              onPress={() => openDetailModal(mission)}
+              accessibilityRole="button"
+            >
               <ButtonText>설명 보기</ButtonText>
             </Button>
           </PointContainer>

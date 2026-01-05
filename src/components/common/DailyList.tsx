@@ -42,13 +42,19 @@ const DailyList: React.FC<DailyListProps> = ({
     <SectionContainer>
       <SectionHeaderContainer>
         <MonthNav>
-          <ArrowButton onPress={onPrevMonth}>
+          <ArrowButton
+            onPress={onPrevMonth}
+            accessibilityLabel="이전 날짜 조회하기"
+          >
             <ArrowLeft />
           </ArrowButton>
 
           <SectionTitle>{date}</SectionTitle>
 
-          <ArrowButton onPress={onNextMonth}>
+          <ArrowButton
+            onPress={onNextMonth}
+            accessibilityLabel="다음 날짜 조회하기"
+          >
             <ArrowRight />
           </ArrowButton>
         </MonthNav>
@@ -72,7 +78,7 @@ const DailyList: React.FC<DailyListProps> = ({
                 $opened={isExpanded}
                 onPress={() => toggleExpand(row.id)}
               >
-                <ToggleText $opened={isExpanded}>
+                <ToggleText $opened={isExpanded} accessibilityRole="button">
                   {isExpanded ? '닫기' : '열기'}
                 </ToggleText>
               </ToggleButton>

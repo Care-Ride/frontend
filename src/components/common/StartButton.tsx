@@ -10,7 +10,12 @@ type Props = {
 
 const StartButton = ({ text = '시작하기', onPress, disabled }: Props) => {
   return (
-    <Container onPress={onPress} activeOpacity={0.8} disabled={disabled}>
+    <Container
+      onPress={onPress}
+      activeOpacity={0.8}
+      disabled={disabled}
+      accessibilityRole="button"
+    >
       <Text>{text}</Text>
     </Container>
   );

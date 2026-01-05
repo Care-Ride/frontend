@@ -23,10 +23,16 @@ const BrakeQuestion: React.FC<Props> = ({
       <GuideText>{guideText}</GuideText>
 
       <ButtonContainer>
-        <ChoiceButton onPress={() => onSelect('left')}>
+        <ChoiceButton
+          onPress={() => onSelect('left')}
+          accessibilityRole="button"
+        >
           <ChoiceText>왼쪽</ChoiceText>
         </ChoiceButton>
-        <ChoiceButton onPress={() => onSelect('right')}>
+        <ChoiceButton
+          onPress={() => onSelect('right')}
+          accessibilityRole="button"
+        >
           <ChoiceText>오른쪽</ChoiceText>
         </ChoiceButton>
       </ButtonContainer>

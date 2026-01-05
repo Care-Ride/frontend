@@ -18,7 +18,11 @@ const UnbalanceButton = ({
 }: BottomStepButtonsProps) => {
   return (
     <Container>
-      <PrevButton onPress={onPressPrev} activeOpacity={0.7}>
+      <PrevButton
+        onPress={onPressPrev}
+        activeOpacity={0.7}
+        accessibilityRole="button"
+      >
         <PrevText>{prevText}</PrevText>
       </PrevButton>
 
@@ -26,6 +30,7 @@ const UnbalanceButton = ({
         onPress={onPressNext}
         disabled={disabledNext}
         activeOpacity={disabledNext ? 1 : 0.7}
+        accessibilityRole="button"
       >
         <NextText $disabled={disabledNext}>{nextText}</NextText>
       </NextButton>
