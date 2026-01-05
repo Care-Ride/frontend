@@ -24,7 +24,7 @@ const DestinationSearchBar: React.FC<Props> = ({
         value={value}
         onChangeText={handleChangeText}
         placeholder="목적지를 입력해주세요"
-        placeholderTextColor="#A0A0A0"
+        placeholderTextColor="#6d767f"
         returnKeyType="search"
         onSubmitEditing={e => onSubmit(e.nativeEvent.text)}
         accessibilityLabel="목적지 입력창"
@@ -52,7 +52,7 @@ const BarContainer = styled.View`
 const SearchInput = styled.TextInput`
   flex: 1;
   font-size: 14px;
-  color: #333;
+  color: ${({ theme }) => theme.colors.black};
 `;
 
 const SearchButton = styled.TouchableOpacity`
