@@ -5,19 +5,26 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import BottomStepButtons from '../../components/common/BottomStepButton';
 import SelectTransportationComponent from '../../components/common/SelectTransportationComponent';
 import { postDriveStart } from '../../api/driving-controller';
+import StartButton from '../../components/common/StartButton';
 
 const ReactivityTest = () => {
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
   const { destination, lat, lon } = route.params || {};
 
-  type Phase = 'waiting' | 'go' | 'result';
+  type Phase = 'intro' | 'waiting' | 'go' | 'result';
 
-  const [phase, setPhase] = useState<Phase>('waiting');
+  const [phase, setPhase] = useState<Phase>('intro');
   const [reactionTime, setReactionTime] = useState<number | null>(null);
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const startTimeRef = useRef<number | null>(null);
+
+  const handleStart = () => {
+    setReactionTime(null);
+    startTimeRef.current = null;
+    setPhase('waiting');
+  };
 
   // 초록 -> 빨강으로 바뀌는 타이머
   useEffect(() => {
@@ -93,6 +100,8 @@ const ReactivityTest = () => {
       ? isSlow
         ? '오늘은 다른 이동 수단을\n사용하시는 것은 어떤 선택일까요?'
         : ''
+      : phase === 'go' || phase === 'waiting'
+      ? ''
       : '초록색이 빨간색으로 바뀌는 순간 화면을 클릭해주세요.';
 
   return (
@@ -112,9 +121,13 @@ const ReactivityTest = () => {
           <Description>{descriptionText}</Description>
         )}
 
-        {phase !== 'result' ? (
+        {phase === 'intro' ? (
+          <StartButton onPress={handleStart} text="시작하기" />
+        ) : phase !== 'result' ? (
           <TouchBox onPress={handleTouchBoxPress} activeOpacity={0.8}>
-            <ColorBox bgColor={bgColor} />
+            <ColorBox bgColor={bgColor}>
+              {phase === 'go' && <PressText>눌러주세요</PressText>}
+            </ColorBox>
           </TouchBox>
         ) : isSlow ? (
           <SelectTransportationComponent />
@@ -127,7 +140,7 @@ const ReactivityTest = () => {
             <BottomStepButtons
               onPressPrev={() => navigation.goBack()}
               prevText="이전"
-              disabledNext={true}
+              nextText="운전하기"
             />
           ) : (
             <BottomStepButtons
@@ -165,7 +178,7 @@ const Title = styled.Text`
 const Description = styled.Text`
   width: 75%;
   align-self: center;
-  font-size: ${({ theme }) => theme.scaleFont(18 * theme.fontScale)};
+  font-size: ${({ theme }) => theme.scaleFont(20 * theme.fontScale)};
   font-weight: 500;
   color: #111111;
   text-align: center;
@@ -180,10 +193,18 @@ const TouchBox = styled.TouchableOpacity`
 `;
 
 const ColorBox = styled.View<{ bgColor: string }>`
-  width: 70%;
-  height: 220px;
+  width: 75%;
+  height: 260px;
   border-radius: 24px;
   background-color: ${({ bgColor }) => bgColor};
+  justify-content: center;
+  align-items: center;
+`;
+
+const PressText = styled.Text`
+  color: white;
+  font-size: ${({ theme }) => theme.scaleFont(30 * theme.fontScale)};
+  font-weight: 500;
 `;
 
 const SafeDrivingText = styled.Text`

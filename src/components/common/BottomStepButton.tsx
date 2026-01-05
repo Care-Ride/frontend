@@ -25,7 +25,7 @@ const BottomStepButtons = ({
       <NextButton
         onPress={onPressNext}
         disabled={disabledNext}
-        activeOpacity={disabledNext ? 1 : 0.3}
+        activeOpacity={disabledNext ? 1 : 0}
       >
         <NextText $disabled={disabledNext}>{nextText}</NextText>
       </NextButton>
@@ -67,12 +67,12 @@ const NextButton = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
   background-color: ${({ theme }) => theme.colors.bluePrimary};
-  opacity: ${({ disabled }) => (disabled ? 0.4 : 1)};
+  opacity: ${({ disabled }) => (disabled ? 0 : 1)};
 `;
 
 const NextText = styled.Text<{ $disabled?: boolean }>`
   font-size: ${({ theme }) => theme.scaleFont(14 * theme.fontScale)};
   font-weight: 600;
   color: ${({ theme }) => theme.colors.white};
-  opacity: ${({ $disabled }) => ($disabled ? 0.7 : 1)};
+  opacity: ${({ $disabled }) => ($disabled ? 0 : 1)};
 `;
