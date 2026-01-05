@@ -10,18 +10,15 @@ import SettingText from '../../components/common/SettingText';
 import StepIndicator from '../../components/login/StepIndicator';
 import BottomStepButtons from '../../components/common/BottomStepButton';
 
-import { soundLevelToVolume } from '../../styles/soundLevel';
 import { playTestSound } from '../../utils/soundPlayer';
 import { postDeviceSetting } from '../../api/member-controller';
 
 const FirstSoundSetting = () => {
   const route = useRoute<any>();
-  const { localLevel } = route.params;
   const [soundLevel, setSoundLevel] = useState(3);
   const navigation = useNavigation();
   const handleTest = () => {
-    const volume = soundLevelToVolume(soundLevel);
-    playTestSound(volume);
+    playTestSound();
   };
 
   return (
@@ -31,10 +28,12 @@ const FirstSoundSetting = () => {
         <StepIndicator currentStep={2} />
         <SettingText
           title="소리 크기 설정"
-          description="단계별로 예시 소리를 듣고 적절한 소리 크기로 설정하세요"
+          description="기기의 볼륨 조절 버튼을 눌러 적절한 소리 크기로 설정하세요"
+          showRange={false}
         />
         <LevelSetting
           level={soundLevel}
+          levelControl={false}
           onChangeLevel={setSoundLevel}
           onTestPress={handleTest}
           Icon={<Sound />}
@@ -42,9 +41,7 @@ const FirstSoundSetting = () => {
         />
         <BottomStepButtons
           onPressPrev={() => navigation.goBack()}
-          onPressNext={() =>
-            navigation.navigate('SettingDone', { localLevel, soundLevel })
-          }
+          onPressNext={() => navigation.navigate('SettingDone', { soundLevel })}
           prevText="뒤로가기"
           nextText="다음"
         />

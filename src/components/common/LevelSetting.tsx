@@ -4,6 +4,7 @@ import { TouchableOpacity } from 'react-native';
 
 type LevelSettingScreenProps = {
   level: number;
+  levelControl: boolean;
   minLevel?: number;
   maxLevel?: number;
   onChangeLevel: (level: number) => void;
@@ -16,6 +17,7 @@ type LevelSettingScreenProps = {
 
 export const LevelSetting: React.FC<LevelSettingScreenProps> = ({
   level,
+  levelControl = true,
   minLevel = 1,
   maxLevel = 6,
   onChangeLevel,
@@ -33,20 +35,36 @@ export const LevelSetting: React.FC<LevelSettingScreenProps> = ({
 
   return (
     <Container>
-      <LevelContainer>
-        <PlusMinusButton onPress={handleMinus} accessibilityLabel="줄이기 버튼">
-          <ButtonText>-</ButtonText>
-        </PlusMinusButton>
-        <LevelText>{level}단계</LevelText>
-        <PlusMinusButton onPress={handlePlus} accessibilityLabel="키우기 버튼">
-          <ButtonText>+</ButtonText>
-        </PlusMinusButton>
-      </LevelContainer>
+      {levelControl ? (
+        <LevelContainer>
+          <PlusMinusButton
+            onPress={handleMinus}
+            accessibilityLabel="줄이기 버튼"
+          >
+            <ButtonText>-</ButtonText>
+          </PlusMinusButton>
+          <LevelText>{level}단계</LevelText>
+          <PlusMinusButton
+            onPress={handlePlus}
+            accessibilityLabel="키우기 버튼"
+          >
+            <ButtonText>+</ButtonText>
+          </PlusMinusButton>
+        </LevelContainer>
+      ) : (
+        ''
+      )}
       {cardText ? (
         <Card>
-          {Icon ? <IconWrapper>{Icon}</IconWrapper> : ''}
+          {Icon ? (
+            <IconWrapper
+              onPress={onTestPress}
+              accessibilityLabel="소리 듣기 버튼"
+            >
+              {Icon}
+            </IconWrapper>
+          ) : null}
           <CardText>{cardText}</CardText>
-          {onTestPress && <TestButton onPress={onTestPress} />}
         </Card>
       ) : (
         ''
