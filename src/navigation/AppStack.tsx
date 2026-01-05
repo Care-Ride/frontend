@@ -55,6 +55,8 @@ import Manual from '../pages/home/Manual';
 import { useAuth } from '../AuthContext';
 import Privacy from '../pages/home/Privacy';
 import ConnectBluetooth from '../pages/setting/ConnectBluetooth';
+import ReceivedGift from '../pages/point/ReceivedGift';
+import UsePoint from '../pages/point/UsePoint';
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
@@ -202,6 +204,8 @@ const PointStackNavigator = () => {
     >
       <PointStack.Screen name="MyPoint" component={MyPoint} />
       <PointStack.Screen name="PointList" component={PointList} />
+      <PointStack.Screen name="UsePoint" component={UsePoint} />
+      <PointStack.Screen name="ReceivedGift" component={ReceivedGift} />
     </PointStack.Navigator>
   );
 };
