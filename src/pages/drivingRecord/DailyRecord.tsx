@@ -88,18 +88,20 @@ const DailyRecord = () => {
     <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
       <BackButton />
       <Container>
-        <Title>일별 운전 기록</Title>
-        <Description>
-          운전기록은 '운전이 종료된 시점'을 기준으로 합니다
-        </Description>
+        <ScrollContent>
+          <Title>일별 운전 기록</Title>
+          <Description>
+            운전기록은 '운전이 종료된 시점'을 기준으로 합니다
+          </Description>
 
-        <DailyList
-          month={month}
-          date={displayDate}
-          onPrevMonth={handlePrevDay}
-          onNextMonth={handleNextDay}
-          rows={rows}
-        />
+          <DailyList
+            month={month}
+            date={displayDate}
+            onPrevMonth={handlePrevDay}
+            onNextMonth={handleNextDay}
+            rows={rows}
+          />
+        </ScrollContent>
       </Container>
     </SafeAreaView>
   );
@@ -121,3 +123,4 @@ const Title = styled.Text`
 const Description = styled.Text`
   font-size: ${({ theme }) => theme.scaleFont(16 * theme.fontScale)};
 `;
+const ScrollContent = styled.ScrollView.attrs(() => ({}))``;
