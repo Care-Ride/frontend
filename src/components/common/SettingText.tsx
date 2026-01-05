@@ -17,7 +17,7 @@ const SettingText: React.FC<SettingTextProps> = ({
       <Title>{title}</Title>
       <Description>{description}</Description>
 
-      {showRange && <Description>1~5단계까지 설정이 가능합니다.</Description>}
+      {showRange && <Description>1~6단계까지 설정이 가능합니다.</Description>}
     </Container>
   );
 };
