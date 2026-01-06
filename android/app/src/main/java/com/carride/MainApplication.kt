@@ -1,4 +1,4 @@
-package com.careride
+package com.care.ride
 
 import android.app.Application
 import com.facebook.react.PackageList

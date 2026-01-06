@@ -77,15 +77,15 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.careride"
+    namespace "com.care.ride"
     defaultConfig {
-        applicationId "com.careride"
+        applicationId "com.care.ride"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 6
+        versionCode 16
         versionName "1.0"
         manifestPlaceholders = [ 
-           appAuthRedirectScheme: "com.careride"
+           appAuthRedirectScheme: "com.care.ride"
         ]
         missingDimensionStrategy 'store', 'play'
     }
