@@ -1,4 +1,4 @@
-package com.careride
+package com.care.ride
 
 import android.os.Bundle
 import android.util.Log

@@ -10,15 +10,20 @@ import SettingText from '../../components/common/SettingText';
 import StepIndicator from '../../components/login/StepIndicator';
 import BottomStepButtons from '../../components/common/BottomStepButton';
 
-import { playTestSound } from '../../utils/soundPlayer';
+import { playTestSound, initSounds } from '../../utils/soundPlayer';
 import { postDeviceSetting } from '../../api/member-controller';
 
 const FirstSoundSetting = () => {
   const route = useRoute<any>();
   const [soundLevel, setSoundLevel] = useState(3);
   const navigation = useNavigation();
+
+  useEffect(() => {
+    initSounds();
+  }, []);
+
   const handleTest = () => {
-    playTestSound();
+    setTimeout(() => playTestSound(), 300);
   };
 
   return (
