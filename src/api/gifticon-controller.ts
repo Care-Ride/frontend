@@ -54,3 +54,16 @@ export const getGifticonHistoryList = async (
     );
   }
 };
+
+// 기프티콘 바코드 이미지 조회
+export const getGifticonBarcode = async (barcodeId: number) => {
+  try {
+    const response = await api.post(`/api/gifticon/barcode`, { barcodeId });
+    return response;
+  } catch (err: any) {
+    console.error(
+        '기프티콘 바코드 이미지 조회 실패', 
+        err?.response?.data || err.message || err);
+    throw err;
+  }
+};

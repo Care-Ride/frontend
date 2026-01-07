@@ -3,7 +3,8 @@ import styled from 'styled-components/native';
 import BackButton from '../../components/common/BackButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import GifticonHistory from '../../components/point/GifticonHistory';
-import { getGifticonHistoryList } from '../../api/gifticon-controller';
+import { getGifticonHistoryList, getGifticonBarcode } from '../../api/gifticon-controller';
+import BarcodeModal from '../../components/point/BarcodeModal';
 
 export type BoughtGificonListProps = {
   id: number; // 바코드 id
@@ -38,15 +39,47 @@ const ReceivedGift = () => {
     }
   };
 
+  // 바코드 모달창 보여주기
+  const [barcodeVisible, setBarcodeVisible] = useState(false);
+  const [barcodeImageUrl, setBarcodeImageUrl] = useState<string | null>(null);
+  const [barcodeLoading, setBarcodeLoading] = useState(false);
+  const [selectedBarcodeId, setSelectedBarcodeId] = useState<number | null>(null);
+
+  const openBarcodeModal = async (row: BoughtGificonListProps) => {
+    setSelectedBarcodeId(row.id);
+    setBarcodeVisible(true);
+    setBarcodeLoading(true);
+    setBarcodeImageUrl(null);
+
+    try {
+      const response = await getGifticonBarcode(row.id);
+      const data = response?.data.data;
+
+      const imageUrl =
+        data?.barcodeImageUrl ??
+        data?.imageUrl ??
+        null;
+
+      setBarcodeImageUrl(imageUrl);
+    } catch (err) {
+      console.error(err);
+      setBarcodeImageUrl(null);
+    } finally {
+      setBarcodeLoading(false);
+    }
+  };
+
+  const closeBarcodeModal = () => {
+    setBarcodeVisible(false);
+    setSelectedBarcodeId(null);
+    setBarcodeImageUrl(null);
+    setBarcodeLoading(false);
+  };
+
+
   useEffect(() => {
     readGifticonHistory();
   }, []);
-
-  const handlePressBarcode = (row: BoughtGificonListProps) => {
-    // TODO: 바코드 상세 화면으로 이동
-    // navigation.navigate('BarcodeDetail' as never, { barcodeId: row.id } as never);
-    console.log('barcodeId:', row.id);
-  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
@@ -57,9 +90,17 @@ const ReceivedGift = () => {
           <GifticonHistory
             rows={rows}
             productCount={productCount}
-            onPressBuy={handlePressBarcode}
+            onPressBuy={openBarcodeModal}
           />
         </ScrollContent>
+
+        {/* 바코드 모달 */}
+        <BarcodeModal
+          visible={barcodeVisible}
+          barcodeImageUrl={barcodeImageUrl}
+          loading={barcodeLoading}
+          onClose={closeBarcodeModal}
+        />
       </Container>
     </SafeAreaView>
   );
