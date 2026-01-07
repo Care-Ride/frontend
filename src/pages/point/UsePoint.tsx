@@ -4,9 +4,12 @@ import BackButton from '../../components/common/BackButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import UsePointList from '../../components/point/UsePointList';
 import { useRoute } from '@react-navigation/native';
+import { getGifticonProductList } from '../../api/gifticon-controller';
+import { ActionModal } from '../../components/common/Modal';
 
 export type BuyStatus = '구매하기' | '구매불가';
 export type UsePointListProps = {
+  id: number;
   picture: string;
   brand: string;
   productName: string;
@@ -16,41 +19,81 @@ export type UsePointListProps = {
 
 const UsePoint = () => {
   const route = useRoute();
-  const { point } = route.params as { point: number };
+  const initialPoint = (route.params as { point?: number })?.point ?? 0;
 
-  const rows: UsePointListProps[] = useMemo(() => {
-    const items: UsePointListProps[] = [
-      {
-        picture: 'https://picsum.photos/200/200?random=1',
-        brand: '스타벅스',
-        productName: '아메리카노 Tall',
-        price: 4500,
-        status: '구매불가',
-      },
-      {
-        picture: 'https://picsum.photos/200/200?random=2',
-        brand: '배스킨라빈스',
-        productName: '싱글레귤러',
-        price: 3900,
-        status: '구매하기',
-      },
-      {
-        picture: 'https://picsum.photos/200/200?random=3',
-        brand: 'GS25',
-        productName: '모바일 상품권 5,000원',
-        price: 5000,
-        status: '구매하기',
-      },
-      {
-        picture: 'https://picsum.photos/200/200?random=4',
-        brand: '교촌치킨',
-        productName: '허니콤보',
-        price: 23000,
-        status: '구매하기',
-      },
-    ];
-    return items;
+  const [point, setPoint] = useState<number>(initialPoint);
+  const [rows, setRows] = useState<UsePointListProps[]>([]);
+
+  // 구매 확인 모달
+  const [buyVisible, setBuyVisible] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<UsePointListProps | null>(null);
+
+  const openBuyModal = (row: UsePointListProps) => {
+    setSelectedProduct(row);
+    setBuyVisible(true);
+  };
+
+  const closeBuyModal = () => {
+    setBuyVisible(false);
+    setSelectedProduct(null);
+  };
+
+  const readGifticonList = async () => {
+    try {
+      const response = await getGifticonProductList();
+      const data = response?.data.data; 
+
+      const products = data?.products ?? [];
+      const pointBalance = data?.pointBalance;
+
+      if (typeof pointBalance === 'number') {
+        setPoint(pointBalance);
+      }
+
+      const mappedRows: UsePointListProps[] = products.map((p: any) => {
+        const canBuy = point >= p.requiredPoint && p.stock > 0;
+
+        return {
+          id: p.id,
+          picture: p.imageUrl,
+          brand: p.brandName,
+          productName: p.productName,
+          price: p.requiredPoint,
+          status: canBuy ? '구매하기' : '구매불가',
+        };
+      });
+
+      setRows(mappedRows);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    readGifticonList();
   }, []);
+
+  const handleBuyConfirm = async () => {
+    if (!selectedProduct) return;
+
+    try {
+      // TODO: 구매 API 연결 (예: await buyGifticon(selectedProduct.id))
+      // 성공하면 포인트/리스트 새로고침
+      // await readGifticonList();
+    } catch (err) {
+      console.error(err);
+    } finally {
+      closeBuyModal();
+    }
+  };
+
+  const modalTitle = selectedProduct
+    ? `${selectedProduct.brand}\n ${selectedProduct.productName}\n정말 구매할까요?`
+    : '정말 구매할까요?';
+
+  const modalBodyLines = selectedProduct
+    ? [`${selectedProduct.price}P가 차감됩니다.`, `구매 후 잔여포인트: ${point - selectedProduct.price}P`]
+    : [];
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
@@ -58,8 +101,20 @@ const UsePoint = () => {
       <Container>
         <Title>포인트 사용하기</Title>
         <ScrollContent>
-          <UsePointList rows={rows} point={point} />
+          <UsePointList rows={rows} point={point} onPressBuy={openBuyModal} />
         </ScrollContent>
+
+        {/* 구매 확인 모달 */}
+        <ActionModal
+          visible={buyVisible}
+          title={modalTitle}
+          bodyLines={modalBodyLines}
+          confirmText="구매하기"
+          cancelText="취소"
+          onConfirm={handleBuyConfirm}
+          onCancel={closeBuyModal}
+          onRequestClose={closeBuyModal}
+        />
       </Container>
     </SafeAreaView>
   );

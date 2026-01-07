@@ -8,9 +8,10 @@ import { UsePointListProps } from '../../pages/point/UsePoint';
 type MonthlyListProps = {
   point: number;
   rows: UsePointListProps[];
+  onPressBuy?: (row: UsePointListProps) => void;
 };
 
-const UsePointList: React.FC<MonthlyListProps> = ({ point, rows }) => {
+const UsePointList: React.FC<MonthlyListProps> = ({ point, rows, onPressBuy }) => {
   return (
     <SectionContainer>
       <SectionHeaderContainer>
@@ -41,6 +42,7 @@ const UsePointList: React.FC<MonthlyListProps> = ({ point, rows }) => {
                     disabled={isDisabled}
                     activeOpacity={0.7}
                     accessibilityRole="button"
+                    onPress={() => onPressBuy?.(row)}
                   >
                     <BuyButtonText $disabled={isDisabled}>
                       {row.status}
