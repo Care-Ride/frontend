@@ -3,8 +3,8 @@ import styled from 'styled-components/native';
 import BackButton from '../../components/common/BackButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import UsePointList from '../../components/point/UsePointList';
-import { useRoute } from '@react-navigation/native';
-import { getGifticonProductList } from '../../api/gifticon-controller';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { getGifticonProductList, purchaseGifticon } from '../../api/gifticon-controller';
 import { ActionModal } from '../../components/common/Modal';
 
 export type BuyStatus = '구매하기' | '구매불가';
@@ -19,14 +19,15 @@ export type UsePointListProps = {
 
 const UsePoint = () => {
   const route = useRoute();
-  const initialPoint = (route.params as { point?: number })?.point ?? 0;
+  const navigation = useNavigation();
 
+  const initialPoint = (route.params as { point?: number })?.point ?? 0;
   const [point, setPoint] = useState<number>(initialPoint);
   const [rows, setRows] = useState<UsePointListProps[]>([]);
 
-  // 구매 확인 모달
   const [buyVisible, setBuyVisible] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<UsePointListProps | null>(null);
+  const [buyLoading, setBuyLoading] = useState(false);
 
   const openBuyModal = (row: UsePointListProps) => {
     setSelectedProduct(row);
@@ -34,6 +35,7 @@ const UsePoint = () => {
   };
 
   const closeBuyModal = () => {
+    if (buyLoading) return; // 구매 중엔 닫히지 않게
     setBuyVisible(false);
     setSelectedProduct(null);
   };
@@ -46,13 +48,15 @@ const UsePoint = () => {
       const products = data?.products ?? [];
       const pointBalance = data?.pointBalance;
 
+      const effectivePoint =
+        typeof pointBalance === 'number' ? pointBalance : point;
+
       if (typeof pointBalance === 'number') {
         setPoint(pointBalance);
       }
 
       const mappedRows: UsePointListProps[] = products.map((p: any) => {
-        const canBuy = point >= p.requiredPoint && p.stock > 0;
-
+        const canBuy = effectivePoint >= p.requiredPoint && p.stock > 0;
         return {
           id: p.id,
           picture: p.imageUrl,
@@ -73,17 +77,24 @@ const UsePoint = () => {
     readGifticonList();
   }, []);
 
+  // 구매 확정
   const handleBuyConfirm = async () => {
     if (!selectedProduct) return;
 
     try {
-      // TODO: 구매 API 연결 (예: await buyGifticon(selectedProduct.id))
-      // 성공하면 포인트/리스트 새로고침
-      // await readGifticonList();
+      setBuyLoading(true);
+
+      const response = await purchaseGifticon(selectedProduct.id);
+      const purchased = response?.data.data; 
+
+      // 모달 닫기
+      setBuyVisible(false);
+      setSelectedProduct(null);
+      navigation.navigate('ReceivedGift' as never);
     } catch (err) {
       console.error(err);
     } finally {
-      closeBuyModal();
+      setBuyLoading(false);
     }
   };
 

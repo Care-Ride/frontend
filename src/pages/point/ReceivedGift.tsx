@@ -1,14 +1,65 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/native';
 import BackButton from '../../components/common/BackButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import GifticonHistory from '../../components/point/GifticonHistory';
+import { getGifticonHistoryList } from '../../api/gifticon-controller';
+
+export type BoughtGificonListProps = {
+  id: number; // 바코드 id
+  picture: string;
+  brand: string;
+  productName: string;
+};
 
 const ReceivedGift = () => {
+  const [rows, setRows] = useState<BoughtGificonListProps[]>([]);
+  const [productCount, setProductCount] = useState<number>(0);
+
+  const readGifticonHistory = async () => {
+    try {
+      const response = await getGifticonHistoryList();
+      const data = response?.data.data;
+
+      const histories = data?.histories ?? [];
+      const totalElements = data?.pageInfo?.totalElements ?? 0;
+
+      const mappedRows: BoughtGificonListProps[] = histories.map((h: any) => ({
+        id: h.barcodeId,
+        picture: h.productImageUrl,
+        brand: h.brandName,
+        productName: h.productName,
+      }));
+
+      setRows(mappedRows);
+      setProductCount(totalElements);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    readGifticonHistory();
+  }, []);
+
+  const handlePressBarcode = (row: BoughtGificonListProps) => {
+    // TODO: 바코드 상세 화면으로 이동
+    // navigation.navigate('BarcodeDetail' as never, { barcodeId: row.id } as never);
+    console.log('barcodeId:', row.id);
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
       <BackButton />
       <Container>
-        <Title>선물함</Title>
+        <Title>구매 내역</Title>
+        <ScrollContent>
+          <GifticonHistory
+            rows={rows}
+            productCount={productCount}
+            onPressBuy={handlePressBarcode}
+          />
+        </ScrollContent>
       </Container>
     </SafeAreaView>
   );
@@ -27,3 +78,9 @@ const Title = styled.Text`
   text-align: center;
   margin-top: 8px;
 `;
+
+const ScrollContent = styled.ScrollView.attrs(() => ({
+  contentContainerStyle: {
+    paddingBottom: 80,
+  },
+}))``;
