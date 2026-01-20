@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
@@ -15,8 +15,9 @@ const SearchDestination = () => {
   const navigation = useNavigation<any>();
   const [keyword, setKeyword] = useState('');
   const [results, setResults] = useState<Destination[]>([]);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const handleSearch = async () => {
+  const handleSearch = async (keyword: string) => {
     const q = keyword.trim();
     if (!q) return;
 
@@ -30,8 +31,8 @@ const SearchDestination = () => {
         id: item.id ?? index,
         name: item.name ?? item.placeName ?? '이름 없음',
         address: item.address ?? item.roadAddress ?? '',
-        lat: item.lat ?? '',
-        lon: item.lon ?? '',
+        destLat: item.lat ?? '',
+        destLon: item.lon ?? '',
       }));
 
       setResults(list);
@@ -40,11 +41,23 @@ const SearchDestination = () => {
     }
   };
 
+  useEffect(() => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+
+    timerRef.current = setTimeout(() => {
+      handleSearch(keyword);
+    }, 300);
+
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, [keyword]);
+
   const handleSelect = (item: Destination) => {
     console.log('선택한 목적지:', item);
     navigation.navigate(
       'ReadyDriving' as never,
-      { destination: item.name, lat: item.lat, lon: item.lon } as never,
+      { destination: item.name } as never,
     );
   };
 
