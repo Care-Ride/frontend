@@ -12,8 +12,9 @@ import {
   DrivingRecordStackParamList,
   PointStackParamList,
   SettingStackParamList,
+  ManualStackParamList,
   AlternativeTransportationStackParamList,
-  IniitalSettingStackParamList,
+  InitialSettingStackParamList,
 } from './params';
 
 import NavigationBar from '../components/common/NavigationBar';
@@ -50,21 +51,23 @@ import EnterCode from '../pages/setting/EnterCode';
 import DrivingDanger from '../pages/drivingAction/DrivingDanger';
 import ReadyDriving from '../pages/drivingAction/ReadyDriving';
 import BasicRuleBrake from '../pages/drivingAction/BasicRuleBrake';
-import Manual from '../pages/home/Manual';
+import ManualHome from '../pages/Manuals/ManualHome';
+import ManualDetail from '../pages/Manuals/ManualDetail';
 
 import { useAuth } from '../AuthContext';
 import Privacy from '../pages/home/Privacy';
 import ConnectBluetooth from '../pages/setting/ConnectBluetooth';
 import ReceivedGift from '../pages/point/ReceivedGift';
 import UsePoint from '../pages/point/UsePoint';
+import SelectOtherTransportation from '../pages/drivingAction/SelectOtherTransportation';
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 const Tab = createBottomTabNavigator();
 
 const InitialSettingStack =
-  createNativeStackNavigator<IniitalSettingStackParamList>() as ReturnType<
-    typeof createNativeStackNavigator<IniitalSettingStackParamList>
+  createNativeStackNavigator<InitialSettingStackParamList>() as ReturnType<
+    typeof createNativeStackNavigator<InitialSettingStackParamList>
   >;
 
 const DrivingActionStack =
@@ -91,6 +94,8 @@ const SettingStack =
   createNativeStackNavigator<SettingStackParamList>() as ReturnType<
     typeof createNativeStackNavigator<SettingStackParamList>
   >;
+
+const ManualStack = createNativeStackNavigator<ManualStackParamList>();
 
 const InitialSettingStackNavigator = () => {
   return (
@@ -123,7 +128,10 @@ const DrivingActionStackNavigator = () => {
     >
       <DrivingActionStack.Screen name="StartDriving" component={StartDriving} />
       <DrivingActionStack.Screen name="ReadyDriving" component={ReadyDriving} />
-
+      <DrivingActionStack.Screen
+        name="SelectOtherTransportation"
+        component={SelectOtherTransportation}
+      />
       <DrivingActionStack.Screen
         name="SearchDestination"
         component={SearchDestination}
@@ -232,6 +240,16 @@ const SettingStackNavigator = () => {
   );
 };
 
+const ManualStackNavigator = () => (
+  <ManualStack.Navigator
+    initialRouteName="ManualHome"
+    screenOptions={{ headerShown: false }}
+  >
+    <ManualStack.Screen name="ManualHome" component={ManualHome} />
+    <ManualStack.Screen name="ManualDetail" component={ManualDetail} />
+  </ManualStack.Navigator>
+);
+
 const MainTabNavigator = () => (
   <Tab.Navigator
     screenOptions={{ headerShown: false }}
@@ -246,7 +264,8 @@ const MainTabNavigator = () => (
         'LinkDriver',
         'SoundSetting',
         'FontSetting',
-        'Manual',
+        'ManualHome',
+        'ManualDetail',
         'Withdraw',
         'BasicRuleBelt',
         'BasicRuleMirror',
@@ -265,6 +284,8 @@ const MainTabNavigator = () => (
         'StartDrivingNoDestination',
         'UsePoint',
         'ReceivedGift',
+        'ConnectBluetooth',
+        'SelectOtherTransportation',
       ];
 
       const shouldHideTab = hiddenRoutes.includes(routeName);
@@ -283,7 +304,6 @@ const MainTabNavigator = () => (
       name="InitialSetting"
       component={InitialSettingStackNavigator}
     />
-    <Tab.Screen name="Manual" component={Manual} />
     <Tab.Screen name="DrivingAction" component={DrivingActionStackNavigator} />
     <Tab.Screen name="DrivingRecord" component={DrivingRecordStackNavigator} />
     <Tab.Screen
@@ -293,6 +313,7 @@ const MainTabNavigator = () => (
     <Tab.Screen name="Point" component={PointStackNavigator} />
 
     <Tab.Screen name="Setting" component={SettingStackNavigator} />
+    <Tab.Screen name="ManualHome" component={ManualStackNavigator} />
   </Tab.Navigator>
 );
 
