@@ -150,13 +150,7 @@ const SelectTransportationComponent = () => {
         visible={isSubstituteModalVisible}
         badgeIcon={<DriverRound />}
         title="대리운전 연동"
-        bodyLines={[
-          '대리운전 기사님을 부르기 위해',
-          '전국 대리운전 번호로 연동합니다.',
-          '',
-          '전화번호가 입력된 창이 열리면',
-          '그대로 전화를 걸어주세요.',
-        ]}
+        body="대리운전 기사님을 부르기 위해 전국 대리운전 번호로 연동합니다. 전화번호가 입력된 창이 열리면 그대로 전화를 걸어주세요."
         confirmText="확인"
         onConfirm={handleConfirm}
         onRequestClose={handleClose}
@@ -165,13 +159,7 @@ const SelectTransportationComponent = () => {
         visible={isTaxiModalVisible}
         badgeIcon={<TaxiRound />}
         title="콜택시 연동"
-        bodyLines={[
-          '서울특별시 네모동에서 부를 수 있는',
-          '콜택시 번호로 연결합니다.',
-          '',
-          '전화번호가 입력된 창이 열리면',
-          '그대로 전화를 걸어주세요.',
-        ]}
+        body="전국 어디서나 이용 가능한 콜택시 번호로 연결합니다. 전화번호가 입력된 창이 열리면 그대로 전화를 걸어주세요."
         confirmText="확인"
         onConfirm={handleConfirm}
         onRequestClose={handleClose}

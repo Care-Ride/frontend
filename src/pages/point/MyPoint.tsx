@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
 import HomeButton from '../../components/common/HomeButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import SelectList from '../../components/common/SelectList';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import MissionList from '../../components/point/MissionList';
 import { ScrollView } from 'react-native';
-import { getMissions } from '../../api/mission-controller';
 import { getPointsBalance } from '../../api/mission-controller';
 import { MISSIONS, MissionDetail } from '../../constants/missions';
 import Gift from '../../assets/point/gift.svg';
@@ -54,11 +52,11 @@ const MyPoint = () => {
           <PointContainer>
             <PointWrapper>
               <Label>나의 포인트</Label>
-              <Point>{point}P</Point>
+              <Point accessibilityLabel={`${point}포인트`}>{point}P</Point>
             </PointWrapper>
             <ButtonContainer>
               <Button
-                onPress={() => navigation.navigate('PointList' as any)}
+                onPress={() => navigation.navigate('PointList' as never)}
                 accessibilityLabel="내역 보기 버튼"
                 accessibilityHint="포인트 적립 및 사용 내역 화면으로 이동합니다"
               >
@@ -76,7 +74,7 @@ const MyPoint = () => {
             </ButtonContainer>
             <ButtonContainer>
               <GiftButton
-                onPress={() => navigation.navigate('ReceivedGift' as any)}
+                onPress={() => navigation.navigate('ReceivedGift' as never)}
                 accessibilityLabel="선물함 버튼"
                 accessibilityHint="선물함 화면으로 이동합니다"
               >

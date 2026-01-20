@@ -102,10 +102,7 @@ const Setting = () => {
         <ActionModal
           visible={logoutVisible}
           title="로그아웃 할까요?"
-          bodyLines={[
-            '로그아웃 후에도 언제든지\n다시 로그인할 수 있습니다.',
-            '로그아웃이 완료되면 자동으로\n로그인 화면으로 넘어갑니다.',
-          ]}
+          body="로그아웃 후에도 언제든지 다시 로그인할 수 있습니다. 로그아웃이 완료되면 자동으로 로그인 화면으로 넘어갑니다."
           badgeIcon={<Logout />}
           confirmText="로그아웃"
           cancelText="취소"

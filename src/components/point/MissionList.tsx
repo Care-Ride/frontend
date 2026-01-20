@@ -6,14 +6,6 @@ import Person from '../../assets/point/person.svg';
 import { SimpleInfoModal } from '../common/Modal';
 import { MissionDetail } from '../../constants/missions';
 
-// type MissionDetailProps = {
-//   id: string;
-//   title: string;
-//   detail: string;
-//   rewardPoint: number;
-//   status: string;
-// };
-
 type MissionProps = {
   missions: MissionDetail[];
 };
@@ -47,7 +39,9 @@ const MissionList: React.FC<MissionProps> = ({ missions }) => {
           <PointContainer>
             <PointWrapper>
               <Point />
-              <PointText>{mission.rewardPoint}P</PointText>
+              <PointText accessibilityLabel={`${mission.rewardPoint}포인트`}>
+                {mission.rewardPoint}P
+              </PointText>
             </PointWrapper>
             <Button
               onPress={() => openDetailModal(mission)}
@@ -61,7 +55,7 @@ const MissionList: React.FC<MissionProps> = ({ missions }) => {
       <SimpleInfoModal
         visible={showModal}
         title={'미션 상세'}
-        bodyLines={(selectedMission?.detail ?? '').split('\n')}
+        body={selectedMission?.detail}
         confirmText="닫기"
         onConfirm={closeDetailModal}
         onRequestClose={closeDetailModal}

@@ -30,7 +30,11 @@ const DestinationSearchBar: React.FC<Props> = ({
         accessibilityLabel="목적지 입력창"
         accessibilityRole="search"
       />
-      <SearchButton onPress={() => onSubmit(value)} activeOpacity={0.8}>
+      <SearchButton
+        onPress={() => onSubmit(value)}
+        activeOpacity={0.8}
+        accessibilityLabel="검색 버튼"
+      >
         <Search />
       </SearchButton>
     </BarContainer>
