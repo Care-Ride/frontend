@@ -6,7 +6,7 @@ export type SimpleInfoModalProps = {
   visible: boolean;
   badgeIcon?: ReactNode;
   title: string;
-  bodyLines: string[];
+  body: string;
   confirmText?: string;
   cancelText?: string;
   onConfirm: () => void;
@@ -18,7 +18,7 @@ export const SimpleInfoModal = ({
   visible,
   badgeIcon,
   title,
-  bodyLines,
+  body,
   confirmText = '확인',
   onConfirm,
   onRequestClose,
@@ -31,11 +31,19 @@ export const SimpleInfoModal = ({
       onRequestClose={onRequestClose}
     >
       <Backdrop>
-        <TouchableWithoutFeedback onPress={onRequestClose}>
-          <BackdropInner />
+        <TouchableWithoutFeedback
+          onPress={onRequestClose}
+          accessible={false}
+          importantForAccessibility="no"
+        >
+          <BackdropInner accessible={false} importantForAccessibility="no" />
         </TouchableWithoutFeedback>
 
-        <Card>
+        <Card
+          accessibilityViewIsModal
+          accessible
+          accessibilityLabel={`${title}. ${body}`}
+        >
           {badgeIcon ? (
             <BadgeWrapper>
               <Badge>{badgeIcon}</Badge>
@@ -43,10 +51,12 @@ export const SimpleInfoModal = ({
           ) : null}
           <Title>{title}</Title>
 
-          <BodyContainer>
-            {bodyLines.map((line, idx) => (
-              <BodyText key={`${line}-${idx}`}>{line}</BodyText>
-            ))}
+          <BodyContainer
+            accessible
+            accessibilityRole="text"
+            accessibilityLabel={body}
+          >
+            <BodyText>{body}</BodyText>
           </BodyContainer>
 
           <ConfirmButton onPress={onConfirm} accessibilityRole="button">
@@ -62,7 +72,7 @@ export const ActionModal = ({
   visible,
   badgeIcon,
   title,
-  bodyLines,
+  body,
   confirmText = '확인',
   cancelText = '취소',
   onConfirm,
@@ -77,8 +87,12 @@ export const ActionModal = ({
       onRequestClose={onRequestClose}
     >
       <Backdrop>
-        <TouchableWithoutFeedback onPress={onRequestClose}>
-          <BackdropInner />
+        <TouchableWithoutFeedback
+          onPress={onRequestClose}
+          accessible={false}
+          importantForAccessibility="no"
+        >
+          <BackdropInner accessible={false} importantForAccessibility="no" />
         </TouchableWithoutFeedback>
 
         <Card>
@@ -89,10 +103,12 @@ export const ActionModal = ({
           ) : null}
           <Title>{title}</Title>
 
-          <BodyContainer>
-            {bodyLines.map((line, idx) => (
-              <BodyText key={`${line}-${idx}`}>{line}</BodyText>
-            ))}
+          <BodyContainer
+            accessible
+            accessibilityRole="text"
+            accessibilityLabel={body}
+          >
+            <BodyText>{body}</BodyText>
           </BodyContainer>
 
           <ButtonContainer>

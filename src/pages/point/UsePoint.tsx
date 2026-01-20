@@ -4,7 +4,10 @@ import BackButton from '../../components/common/BackButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import UsePointList from '../../components/point/UsePointList';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { getGifticonProductList, purchaseGifticon } from '../../api/gifticon-controller';
+import {
+  getGifticonProductList,
+  purchaseGifticon,
+} from '../../api/gifticon-controller';
 import { ActionModal } from '../../components/common/Modal';
 
 export type BuyStatus = '구매하기' | '구매불가';
@@ -26,7 +29,8 @@ const UsePoint = () => {
   const [rows, setRows] = useState<UsePointListProps[]>([]);
 
   const [buyVisible, setBuyVisible] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<UsePointListProps | null>(null);
+  const [selectedProduct, setSelectedProduct] =
+    useState<UsePointListProps | null>(null);
   const [buyLoading, setBuyLoading] = useState(false);
 
   const openBuyModal = (row: UsePointListProps) => {
@@ -43,7 +47,7 @@ const UsePoint = () => {
   const readGifticonList = async () => {
     try {
       const response = await getGifticonProductList();
-      const data = response?.data.data; 
+      const data = response?.data.data;
 
       const products = data?.products ?? [];
       const pointBalance = data?.pointBalance;
@@ -85,7 +89,7 @@ const UsePoint = () => {
       setBuyLoading(true);
 
       const response = await purchaseGifticon(selectedProduct.id);
-      const purchased = response?.data.data; 
+      const purchased = response?.data.data;
 
       // 모달 닫기
       setBuyVisible(false);
@@ -102,9 +106,11 @@ const UsePoint = () => {
     ? `${selectedProduct.brand}\n ${selectedProduct.productName}\n정말 구매할까요?`
     : '정말 구매할까요?';
 
-  const modalBodyLines = selectedProduct
-    ? [`${selectedProduct.price}P가 차감됩니다.`, `구매 후 잔여포인트: ${point - selectedProduct.price}P`]
-    : [];
+  const modalBody = selectedProduct
+    ? `${selectedProduct.price}P가 차감됩니다.\n구매 후 잔여포인트: ${
+        point - selectedProduct.price
+      }P`
+    : '';
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
@@ -119,7 +125,7 @@ const UsePoint = () => {
         <ActionModal
           visible={buyVisible}
           title={modalTitle}
-          bodyLines={modalBodyLines}
+          body={modalBody}
           confirmText="구매하기"
           cancelText="취소"
           onConfirm={handleBuyConfirm}
