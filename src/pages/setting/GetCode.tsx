@@ -143,7 +143,7 @@ const RefreshButton = styled.TouchableOpacity<{ disabled?: boolean }>`
 
 const RefreshButtonText = styled.Text`
   font-size: ${({ theme }) => theme.scaleFont(12 * theme.fontScale)};
-  color: ${({ theme }) => theme.colors.gray500};
+  color: ${({ theme }) => theme.colors.black};
 `;
 
 const InfoText = styled.Text`

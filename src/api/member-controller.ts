@@ -14,6 +14,12 @@ export const postLinkConnect = async (code: string) => {
     const response = await api.post(`/api/member/link/connect`, { code });
     return response;
   } catch (err: any) {
+    const status = err?.response?.status;
+
+    if (status === 400) {
+      throw err;
+    }
+
     console.error('링크 연결 실패', err?.response?.data || err.message || err);
     throw err;
   }

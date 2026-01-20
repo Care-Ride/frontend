@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import styled from 'styled-components/native';
 import BackButton from '../../components/common/BackButton';
-import Car from '../../assets/drivingRecord/car.svg';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MonthlyList from '../../components/common/MonthlyList';
 import StarFilled from '../../assets/drivingRecord/star_filled.svg';
@@ -22,7 +22,6 @@ type MonthlyData = {
 
 const MonthlyRecord = () => {
   const [yearMonth, setYearMonth] = useState(getCurrentYearMonth());
-  const [monthlyData, setMonthlyData] = useState<MonthlyData | null>(null);
   const currentYearMonth = getCurrentYearMonth();
 
   const yearMonthKR = formatYearMonthKR(yearMonth);
@@ -37,24 +36,24 @@ const MonthlyRecord = () => {
       return addMonthsToYearMonth(prev, 1);
     });
 
-  const readMonthlyDrive = async () => {
-    try {
+  const { data: monthlyData } = useQuery<MonthlyData | null>({
+    queryKey: ['monthlyDrive', yearMonth],
+    queryFn: async () => {
       const response = await getMonthlyDrive(yearMonth);
-      const data = response?.data.data;
-      setMonthlyData({
+      const data = response?.data?.data;
+
+      if (!data) return null;
+
+      return {
         month: data.month,
         avgScore: data.avgScore,
         hardAccelStar: data.hardAccelStar,
         hardDecelStar: data.hardDecelStar,
-      });
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  useEffect(() => {
-    readMonthlyDrive();
-  }, [yearMonth]);
+      };
+    },
+    enabled: Boolean(yearMonth),
+    placeholderData: keepPreviousData, // 월 넘길 때 깜빡임 줄임
+  });
 
   const accelStar = monthlyData?.hardAccelStar ?? 0;
   const decelStar = monthlyData?.hardDecelStar ?? 0;

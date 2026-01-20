@@ -16,7 +16,7 @@ const SelectUserType = () => {
   const createRole = async () => {
     if (!selectedUserType) return;
     await postRole(selectedUserType);
-    navigation.navigate('FirstFontSetting');
+    navigation.navigate('FirstFontSetting' as never);
   };
 
   return (

@@ -7,7 +7,7 @@ type Option = {
 };
 
 type SettingSectionProps = {
-  title: string;
+  title?: string;
   icon?: React.ReactNode;
   options: Option[];
 };
