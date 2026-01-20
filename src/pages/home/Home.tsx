@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Dimensions } from 'react-native';
 import styled from 'styled-components/native';
+import { useAtom } from 'jotai';
+import { memberAtom } from '../../atoms/memberAtom';
 
 import Handle from '../../assets/common/handle_yellow.svg';
 import Transportation from '../../assets/common/transportation_yellow.svg';
@@ -31,13 +33,24 @@ const Home = () => {
   });
 
   const navigation = useNavigation();
-  const route = useRoute<any>();
 
-  const [nickname, setNickname] = useState('');
+  const [member, setMember] = useAtom(memberAtom);
+  const [isMemberLoaded, setIsMemberLoaded] = useState(false);
 
+  const isGuardian = member.role === 'GUARDIAN';
   const readMember = async () => {
-    const response = await getMember();
-    setNickname(response?.data.data.nickname);
+    try {
+      const response = await getMember();
+      const data = response?.data?.data;
+      if (!data) return;
+
+      setMember({
+        nickname: data.nickname ?? '',
+        role: data.role,
+      });
+    } finally {
+      setIsMemberLoaded(true);
+    }
   };
   useEffect(() => {
     readMember();
@@ -54,7 +67,9 @@ const Home = () => {
       >
         <Header>
           <DateText>{dateText}</DateText>
-          <Greeting>안녕하세요 {nickname} 님, 무엇을 시작할까요?</Greeting>
+          <Greeting>
+            안녕하세요 {member.nickname} 님, 무엇을 시작할까요?
+          </Greeting>
 
           <RightIconWrapper>
             <Car />
@@ -63,80 +78,112 @@ const Home = () => {
         </Header>
 
         <GridArea>
-          <Row>
-            <Tile
-              activeOpacity={0.8}
-              onPress={() => navigation.navigate('DrivingRecord' as never)}
-              style={{ paddingBottom: 40, paddingRight: 40 }}
-              accessibilityLabel="기록 탭으로 가기 버튼"
-            >
-              <IconWrap>
-                <Record />
-              </IconWrap>
-              <TileLabel>기록</TileLabel>
-            </Tile>
+          {!isMemberLoaded || !member.role ? (
+            ''
+          ) : isGuardian ? (
+            <Row style={{ marginTop: 40 }}>
+              <Tile
+                activeOpacity={0.8}
+                onPress={() => navigation.navigate('DrivingRecord' as never)}
+                style={{ height: 200 }}
+                accessibilityLabel="기록 탭으로 가기 버튼"
+              >
+                <IconWrap>
+                  <Record />
+                </IconWrap>
+                <TileLabel>기록</TileLabel>
+              </Tile>
 
-            <Tile
-              onPress={() =>
-                navigation.navigate('AlternativeTransportation' as never)
-              }
-              activeOpacity={0.8}
-              style={{ paddingBottom: 40, paddingLeft: 40 }}
-              accessibilityLabel="이동 수단으로 가기 버튼"
-            >
-              <IconWrap>
-                <Transportation />
-              </IconWrap>
-              <TileLabel>이동 수단</TileLabel>
-            </Tile>
-          </Row>
+              <Tile
+                onPress={() => navigation.navigate('Setting' as never)}
+                activeOpacity={0.8}
+                style={{ height: 200 }}
+                accessibilityLabel="설정으로 가기 버튼"
+              >
+                <IconWrap>
+                  <Setting />
+                </IconWrap>
+                <TileLabel>설정</TileLabel>
+              </Tile>
+            </Row>
+          ) : (
+            <>
+              <Row>
+                <Tile
+                  activeOpacity={0.8}
+                  onPress={() => navigation.navigate('DrivingRecord' as never)}
+                  style={{ paddingBottom: 40, paddingRight: 40 }}
+                  accessibilityLabel="기록 탭으로 가기 버튼"
+                >
+                  <IconWrap>
+                    <Record />
+                  </IconWrap>
+                  <TileLabel>기록</TileLabel>
+                </Tile>
 
-          <Row>
-            <Tile
-              onPress={() => navigation.navigate('Point' as never)}
-              activeOpacity={0.8}
-              style={{ paddingTop: 40, paddingRight: 40 }}
-              accessibilityLabel="포인트로 가기 버튼"
-            >
-              <IconWrap>
-                <Point />
-              </IconWrap>
-              <TileLabel>포인트</TileLabel>
-            </Tile>
+                <Tile
+                  onPress={() =>
+                    navigation.navigate('AlternativeTransportation' as never)
+                  }
+                  activeOpacity={0.8}
+                  style={{ paddingBottom: 40, paddingLeft: 40 }}
+                  accessibilityLabel="이동 수단으로 가기 버튼"
+                >
+                  <IconWrap>
+                    <Transportation />
+                  </IconWrap>
+                  <TileLabel>이동 수단</TileLabel>
+                </Tile>
+              </Row>
 
-            <Tile
-              onPress={() => navigation.navigate('Setting' as never)}
-              activeOpacity={0.8}
-              style={{ paddingTop: 40, paddingLeft: 40 }}
-              accessibilityLabel="설정으로 가기 버튼"
-            >
-              <IconWrap>
-                <Setting />
-              </IconWrap>
-              <TileLabel>설정</TileLabel>
-            </Tile>
-          </Row>
+              <Row>
+                <Tile
+                  onPress={() => navigation.navigate('Point' as never)}
+                  activeOpacity={0.8}
+                  style={{ paddingTop: 40, paddingRight: 40 }}
+                  accessibilityLabel="포인트로 가기 버튼"
+                >
+                  <IconWrap>
+                    <Point />
+                  </IconWrap>
+                  <TileLabel>포인트</TileLabel>
+                </Tile>
 
-          <DiamondButton
-            onPress={() => navigation.navigate('DrivingAction' as never)}
-            activeOpacity={0.9}
-            accessibilityLabel="운전으로 가기 버튼"
-          >
-            <Diamond style={{ transform: [{ rotate: '45deg' }] }}>
-              <DiamondInner style={{ transform: [{ rotate: '-45deg' }] }}>
-                <DiamondIconWrap>
-                  <Handle />
-                </DiamondIconWrap>
-                <DiamondLabel>운전</DiamondLabel>
-              </DiamondInner>
-            </Diamond>
-          </DiamondButton>
+                <Tile
+                  onPress={() => navigation.navigate('Setting' as never)}
+                  activeOpacity={0.8}
+                  style={{ paddingTop: 40, paddingLeft: 40 }}
+                  accessibilityLabel="설정으로 가기 버튼"
+                >
+                  <IconWrap>
+                    <Setting />
+                  </IconWrap>
+                  <TileLabel>설정</TileLabel>
+                </Tile>
+              </Row>
+
+              <DiamondButton
+                onPress={() => navigation.navigate('DrivingAction' as never)}
+                activeOpacity={0.9}
+                accessibilityLabel="운전으로 가기 버튼"
+              >
+                <Diamond style={{ transform: [{ rotate: '45deg' }] }}>
+                  <DiamondInner style={{ transform: [{ rotate: '-45deg' }] }}>
+                    <DiamondIconWrap>
+                      <Handle />
+                    </DiamondIconWrap>
+                    <DiamondLabel>운전</DiamondLabel>
+                  </DiamondInner>
+                </Diamond>
+              </DiamondButton>
+            </>
+          )}
         </GridArea>
       </Scroll>
       <GuideWrapper>
         <GuideButton
           activeOpacity={0.9}
-          onPress={() => navigation.navigate('Manual' as never)}
+          onPress={() => navigation.navigate('ManualHome' as never)}
           accessibilityRole="button"
         >
           <GuideText>사용법{'\n'}안내</GuideText>

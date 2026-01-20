@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components/native';
 
 // import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
@@ -15,6 +15,9 @@ import RecordGray from '../../assets/common/record_gray.svg';
 import PointGray from '../../assets/common/point_gray.svg';
 import SettingGray from '../../assets/common/setting_gray.svg';
 import HandleGray from '../../assets/common/handle_gray.svg';
+
+import { useAtomValue } from 'jotai';
+import { memberAtom } from '../../atoms/memberAtom';
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -68,9 +71,18 @@ const NavigationBar = ({
   style,
 }: BottomTabBarProps & { style?: any }) => {
   const insets = useSafeAreaInsets();
-  if (style?.display === 'none') {
-    return null;
-  }
+
+  const member = useAtomValue(memberAtom);
+  const isGuardian = member.role === 'GUARDIAN';
+
+  const filteredItems = useMemo(() => {
+    return isGuardian
+      ? navItems.filter(i => i.key === 'DrivingRecord' || i.key === 'Setting')
+      : navItems;
+  }, [isGuardian]);
+
+  const count = filteredItems.length;
+
   return (
     <Container
       style={[
@@ -81,7 +93,7 @@ const NavigationBar = ({
         },
       ]}
     >
-      {navItems.map(item => {
+      {filteredItems.map(item => {
         // 이 탭이 실제로 라우터에 등록돼 있는지 확인
         const routeIndex = state.routes.findIndex(r => r.name === item.key);
         if (routeIndex === -1) {
@@ -114,6 +126,7 @@ const NavigationBar = ({
         return (
           <NavItem
             key={item.key}
+            $count={count}
             accessibilityRole="button"
             accessibilityState={isFocused ? { selected: true } : {}}
             // accessibilityLabel={descriptors[item.key].options.tabBarAccessibilityLabel}
@@ -151,9 +164,9 @@ const Container = styled.View`
 const NavItem = styled.TouchableOpacity.attrs(() => ({
   hitSlop: { top: 10, bottom: 10, left: 12, right: 12 },
   activeOpacity: 0.8,
-}))`
+}))<{ $count: number }>`
   align-items: center;
-  width: 20%;
+  width: ${({ $count }) => 100 / $count}%;
 `;
 
 const Label = styled.Text<{ $active: boolean }>`

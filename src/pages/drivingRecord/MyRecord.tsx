@@ -1,18 +1,28 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components/native';
 import HomeButton from '../../components/common/HomeButton';
 import Car from '../../assets/drivingRecord/car.svg';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SelectList from '../../components/common/SelectList';
 import { useNavigation } from '@react-navigation/native';
+import { useAtomValue } from 'jotai';
+import { memberAtom } from '../../atoms/memberAtom';
 
 const MyRecord = () => {
   const navigation = useNavigation();
+  const member = useAtomValue(memberAtom);
+
+  const titleText = useMemo(() => {
+    return member.role === 'GUARDIAN' ? '운전 기록' : '나의 운전 기록';
+  }, [member.role]);
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
       <HomeButton />
       <Container>
-        <Title>나의 운전 기록</Title>
+        <Title accessibilityRole="text" accessibilityLabel={titleText}>
+          {titleText}
+        </Title>
         <SelectList
           title="운전 기록 보기"
           icon={<Car />}
