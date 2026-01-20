@@ -6,8 +6,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { postDeviceSetting } from '../../api/member-controller';
 
 import { useAuth } from '../../AuthContext';
-import { api } from '../../api/api';
-
 const SettingDone = () => {
   const { state, setFromServer } = useAuth();
   const route = useRoute<any>();
@@ -88,8 +86,7 @@ const BodyContainer = styled.View`
 `;
 
 const BodyText = styled.Text`
-  font-size: ${({ theme }) => theme.scaleFont(14 * theme.fontScale)};
-  line-height: 27px;
+  font-size: ${({ theme }) => theme.scaleFont(18 * theme.fontScale)};
   text-align: center;
   color: ${({ theme }) => theme.colors.black};
 `;

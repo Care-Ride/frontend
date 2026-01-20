@@ -1,10 +1,7 @@
 import { useState } from 'react';
-import { LevelSetting } from '../../components/common/LevelSetting';
-import Sound from '../../assets/setting/sound.svg';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BackButton from '../../components/common/BackButton';
 import { SmallBottomButton } from '../../components/common/BottomButton';
-import { useNavigation } from '@react-navigation/native';
 import styled from 'styled-components/native';
 import { ActionModal } from '../../components/common/Modal';
 import { SimpleInfoModal } from '../../components/common/Modal';
@@ -22,8 +19,6 @@ const REASONS = [
 ];
 
 const Withdraw = () => {
-  const [level, setLevel] = useState(3);
-  const navigation = useNavigation();
   const [selected, setSelected] = useState('');
   const [otherReason, setOtherReason] = useState('');
 
@@ -60,7 +55,7 @@ const Withdraw = () => {
     closeConfirmModal();
   };
 
-  const onSelect = reason => {
+  const onSelect = (reason: string) => {
     setSelected(reason);
     if (reason !== '기타') {
       setOtherReason('');
@@ -79,7 +74,9 @@ const Withdraw = () => {
               <RadioOuter $selected={selected === reason}>
                 {selected === reason && <RadioInner />}
               </RadioOuter>
-              <ReasonText>{reason}</ReasonText>
+              <ReasonText accessibilityLabel={`${reason} 선택하기`}>
+                {reason}
+              </ReasonText>
             </ReasonRow>
           ))}
 
@@ -98,10 +95,7 @@ const Withdraw = () => {
         <ActionModal
           visible={withdrawVisible}
           title="정말로 운전노하우를 탈퇴하시겠어요?"
-          bodyLines={[
-            '로그아웃 후에도 언제든지\n다시 로그인할 수 있습니다.',
-            '로그아웃이 완료되면 자동으로\n로그인 화면으로 넘어갑니다.',
-          ]}
+          body="로그아웃 후에도 언제든지 다시 로그인할 수 있습니다. 로그아웃이 완료되면 자동으로 로그인 화면으로 넘어갑니다."
           badgeIcon={<Logout />}
           confirmText="예"
           cancelText="아니오"
@@ -113,9 +107,7 @@ const Withdraw = () => {
           visible={confirmVisible}
           badgeIcon={<Logout />}
           title="탈퇴하였습니다"
-          bodyLines={[
-            '보내주신 응답으로 더 발전된 모습으로 돌아오는 운전노하우가 되겠습니다.',
-          ]}
+          body="보내주신 응답으로 더 발전된 모습으로 돌아오는 운전노하우가 되겠습니다."
           confirmText="확인"
           onConfirm={handleConfirm}
           onCancel={closeConfirmModal}
@@ -134,13 +126,15 @@ const Container = styled.View`
   margin: 0 20px;
 `;
 const Title = styled.Text`
-  font-size: 24px;
+  font-size: ${({ theme }) => theme.scaleFont(24 * theme.fontScale)};
+
   font-weight: 700;
   margin: 40px 0px 20px 0px;
 `;
 
 const Description = styled.Text`
-  font-size: 18px;
+  font-size: ${({ theme }) => theme.scaleFont(18 * theme.fontScale)};
+  text-align: center;
 `;
 const ReasonsContainer = styled.View`
   margin-top: 30px;
@@ -171,7 +165,7 @@ const RadioInner = styled.View`
 `;
 
 const ReasonText = styled.Text`
-  font-size: 17px;
+  font-size: ${({ theme }) => theme.scaleFont(17 * theme.fontScale)};
 `;
 
 const OtherInput = styled.TextInput.attrs({
@@ -181,7 +175,8 @@ const OtherInput = styled.TextInput.attrs({
   background-color: #fff8e8;
   border: 1px solid ${({ theme }) => theme.colors.yellowPrimary};
   border-radius: 22px;
-  font-size: 14px;
+  font-size: ${({ theme }) => theme.scaleFont(14 * theme.fontScale)};
+
   text-align-vertical: top;
   font-weight: 300;
 `;

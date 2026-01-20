@@ -29,7 +29,7 @@ const StartDriving = () => {
           </DestinationInputButton>
         </DestinationContainer>
         <StartButton
-          onPress={() => navigation.navigate('BasicRuleBelt' as never)}
+          onPress={() => navigation.navigate('DrivingDanger' as never)}
           accessibilityRole="button"
         >
           <ButtonText>목적지 없이 운전하기</ButtonText>

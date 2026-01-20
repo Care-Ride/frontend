@@ -7,12 +7,14 @@ import BackButton from '../../components/common/BackButton';
 import Car from '../../assets/drivingRecord/car.svg';
 import SelectList from '../../components/common/SelectList';
 import {
-  getMember,
   getMemberLinkSenior,
   getMemberLinkGuardian,
   deleteMemberlink,
 } from '../../api/member-controller';
 import { ActionModal, SimpleInfoModal } from '../../components/common/Modal';
+
+import { useAtomValue } from 'jotai';
+import { memberAtom } from '../../atoms/memberAtom';
 
 type Role = 'SENIOR' | 'GUARDIAN' | '';
 
@@ -28,8 +30,9 @@ const RELATION_LABEL_MAP: Record<string, string> = {
 
 const LinkDriver = () => {
   const navigation = useNavigation();
-  const [myName, setMyName] = useState('');
-  const [role, setRole] = useState<Role>('');
+  const member = useAtomValue(memberAtom);
+  const myName = member.nickname;
+  const role = (member.role ?? '') as Role;
 
   const [linkedName, setLinkedName] = useState('');
   const [linkedRelation, setLinkedRelation] = useState('');
@@ -40,31 +43,6 @@ const LinkDriver = () => {
   const roleName = useMemo(() => {
     return role === 'SENIOR' ? '보호자' : role === 'GUARDIAN' ? '운전자' : '';
   }, [role]);
-
-  const readMember = async () => {
-    try {
-      const response = await getMember();
-      setMyName(response?.data.data.nickname);
-      setRole(response?.data.data.role);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-  useEffect(() => {
-    readMember();
-  }, []);
-  console.log(role, 'role');
-
-  const delMemberLink = async () => {
-    try {
-      await deleteMemberlink();
-      await readMemberAndLink();
-      setShowConfirmModal(false);
-      setShowDoneModal(true);
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   const handleLinkPress = () => {
     if (role === 'SENIOR') {
@@ -98,63 +76,63 @@ const LinkDriver = () => {
     return opts;
   }, [roleName, handleLinkPress, isLinked]);
 
-  const readMemberAndLink = async () => {
+  const readLinkInfo = useCallback(async () => {
     try {
-      // 1) 내 정보
-      const meRes = await getMember();
-      const me = meRes?.data?.data;
+      if (!role) return;
 
-      const myNickname = me?.nickname ?? '';
-      const myRole = (me?.role ?? '') as Role;
-
-      setMyName(myNickname);
-      setRole(myRole);
-
-      // 2) role에 따라 연결된 상대 조회
-      if (myRole === 'SENIOR') {
-        // SENIOR(운전자) => 보호자 정보 조회
+      if (role === 'SENIOR') {
         const linkRes = await getMemberLinkGuardian();
         const link = linkRes?.data?.data;
 
         if (!link) {
           setLinkedName('아직 연결 안됨');
           setLinkedRelation('');
-        } else {
-          const guardianNickname = link?.guardianName ?? '';
-          const relationRaw = link?.relationType ?? '';
-          setLinkedName(guardianNickname);
-          setLinkedRelation(
-            RELATION_LABEL_MAP[relationRaw] ?? relationRaw ?? '',
-          );
+          return;
         }
+
+        const guardianNickname = link?.guardianName ?? '';
+        const relationRaw = link?.relationType ?? '';
+        setLinkedName(guardianNickname || '아직 연결 안됨');
+        setLinkedRelation(RELATION_LABEL_MAP[relationRaw] ?? relationRaw ?? '');
       }
 
-      if (myRole === 'GUARDIAN') {
+      if (role === 'GUARDIAN') {
+        // GUARDIAN(보호자) => 운전자 정보 조회
         const linkRes = await getMemberLinkSenior();
         const link = linkRes?.data?.data;
 
         if (!link) {
           setLinkedName('아직 연결 안됨');
           setLinkedRelation('');
-        } else {
-          const seniorNickname = link?.seniorName ?? '';
-          const relationRaw = link?.relationType ?? '';
-          setLinkedName(seniorNickname);
-          setLinkedRelation(
-            RELATION_LABEL_MAP[relationRaw] ?? relationRaw ?? '',
-          );
+          return;
         }
+
+        const seniorNickname = link?.seniorName ?? '';
+        const relationRaw = link?.relationType ?? '';
+        setLinkedName(seniorNickname || '아직 연결 안됨');
+        setLinkedRelation(RELATION_LABEL_MAP[relationRaw] ?? relationRaw ?? '');
       }
     } catch (err) {
       console.error(err);
     }
-  };
+  }, [role]);
 
   useFocusEffect(
     useCallback(() => {
-      readMemberAndLink();
-    }, [readMemberAndLink]),
+      readLinkInfo();
+    }, [readLinkInfo]),
   );
+
+  const delMemberLink = useCallback(async () => {
+    try {
+      await deleteMemberlink();
+      await readLinkInfo();
+      setShowConfirmModal(false);
+      setShowDoneModal(true);
+    } catch (err) {
+      console.error(err);
+    }
+  }, [readLinkInfo]);
 
   const leftCard = useMemo(() => {
     if (role === 'SENIOR') {
@@ -219,7 +197,7 @@ const LinkDriver = () => {
       <ActionModal
         visible={showConfirmModal}
         title="보호자 연동 해제하기"
-        bodyLines={[`${rightCard.value}과의 연동을 해제할까요?`]}
+        body={`${rightCard.value}과의 연동을 해제할까요?`}
         confirmText="해제하기"
         cancelText="취소"
         onConfirm={delMemberLink}
@@ -229,7 +207,7 @@ const LinkDriver = () => {
       <SimpleInfoModal
         visible={showDoneModal}
         title="보호자 연동 해제 완료"
-        bodyLines={[`${rightCard.value}님과의 연동이 해제되었습니다.`]}
+        body={`${rightCard.value}님과의 연동이 해제되었습니다.`}
         onConfirm={() => setShowDoneModal(false)}
         onRequestClose={() => setShowDoneModal(false)}
       />

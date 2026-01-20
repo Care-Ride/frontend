@@ -71,6 +71,6 @@ const SmallContainer = styled.TouchableOpacity<{ $disabled?: boolean }>`
 const ButtonText = styled.Text<{ $disabled?: boolean }>`
   color: ${({ theme, $disabled }) =>
     $disabled ? theme.colors.white : theme.colors.white};
-  font-size: ${({ theme }) => theme.scaleFont(14)}px;
+  font-size: ${({ theme }) => theme.scaleFont(16)}px;
   font-weight: 600;
 `;

@@ -11,11 +11,17 @@ type MonthlyListProps = {
   onPressBuy?: (row: UsePointListProps) => void;
 };
 
-const UsePointList: React.FC<MonthlyListProps> = ({ point, rows, onPressBuy }) => {
+const UsePointList: React.FC<MonthlyListProps> = ({
+  point,
+  rows,
+  onPressBuy,
+}) => {
   return (
     <SectionContainer>
       <SectionHeaderContainer>
-        <SectionTitle>잔여포인트 {point}P</SectionTitle>
+        <SectionTitle accessibilityLabel={`잔여포인트 ${point}포인트`}>
+          잔여포인트 {point}P
+        </SectionTitle>
 
         <RightIconWrapper>
           <Car />
@@ -35,7 +41,9 @@ const UsePointList: React.FC<MonthlyListProps> = ({ point, rows, onPressBuy }) =
                 <Title>{row.brand}</Title>
                 <Description>{row.productName}</Description>
                 <BuyContainer>
-                  <Description>{row.price}P</Description>
+                  <Description accessibilityLabel={`${row.price}포인트`}>
+                    {row.price}P
+                  </Description>
 
                   <BuyButton
                     $disabled={isDisabled}

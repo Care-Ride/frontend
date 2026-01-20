@@ -1,16 +1,16 @@
 export type RootStackParamList = {
   InitialSettingStackNavigator: undefined;
-  DrivingActionStackNavigator: undefined;
-  DrivingRecordStackNavigator: undefined;
-  AlternativeTransportationStackNavigator: undefined;
-  PointStackNavigator: undefined;
-  SettingStackNavigator: undefined;
-  Home: undefined;
+  // DrivingActionStackNavigator: undefined;
+  // DrivingRecordStackNavigator: undefined;
+  // AlternativeTransportationStackNavigator: undefined;
+  // PointStackNavigator: undefined;
+  // SettingStackNavigator: undefined;
+  // ManualStackNavigator: undefined;
+  // Home: undefined;
   MainTabs: undefined;
-  Manual: undefined;
 };
 
-export type IniitalSettingStackParamList = {
+export type InitialSettingStackParamList = {
   SelectUserType: undefined;
   FirstFontSetting: undefined;
   FirstSoundSetting: undefined;
@@ -19,6 +19,7 @@ export type IniitalSettingStackParamList = {
 
 export type DrivingActionStackParamList = {
   StartDriving: undefined;
+  SelectOtherTransportation: undefined;
   SearchDestination: undefined;
   ReadyDriving: undefined;
   DrivingDanger: undefined;
@@ -59,4 +60,9 @@ export type SettingStackParamList = {
   GetCode: undefined;
   EnterCode: undefined;
   ConnectBluetooth: undefined;
+};
+
+export type ManualStackParamList = {
+  ManualHome: undefined;
+  ManualDetail: { manualId: string };
 };

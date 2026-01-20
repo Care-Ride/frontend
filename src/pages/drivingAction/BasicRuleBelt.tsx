@@ -9,8 +9,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 const BasicRuleBelt = () => {
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
-  const { destination, lat, lon } = route.params || {};
-  console.log(destination, lat, lon);
+  const { curLat, curLon } = route.params || {};
 
   const RANDOM_SCREENS = [
     'BasicRuleMirror',
@@ -26,9 +25,8 @@ const BasicRuleBelt = () => {
     navigation.navigate(
       nextRoute as never,
       {
-        destination,
-        lat,
-        lon,
+        curLat,
+        curLon,
       } as never,
     );
   };

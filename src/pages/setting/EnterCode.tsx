@@ -43,7 +43,7 @@ const RELATION_OPTIONS: RelationType[] = [
 type ResultModalState = {
   visible: boolean;
   title: string;
-  bodyLines: string[];
+  body: string;
   isSuccess: boolean;
 };
 
@@ -57,7 +57,7 @@ const EnterCode = () => {
   const [resultModal, setResultModal] = useState<ResultModalState>({
     visible: false,
     title: '',
-    bodyLines: [],
+    body: '',
     isSuccess: false,
   });
 
@@ -93,7 +93,7 @@ const EnterCode = () => {
         visible: true,
         isSuccess: true,
         title: '인증 완료',
-        bodyLines: ['연동 코드 인증이 완료되었습니다.'],
+        body: '연동 코드 인증이 완료되었습니다.',
       });
     } catch (e: any) {
       setIsVerified(false);
@@ -109,10 +109,9 @@ const EnterCode = () => {
           visible: true,
           isSuccess: false,
           title: '인증 실패',
-          bodyLines: [
-            msg || '이미 연동된 코드입니다.',
-            '다른 코드를 입력해주세요.',
-          ],
+          body: `${
+            msg || '이미 연동된 코드입니다.'
+          }\n다른 코드를 입력해주세요.`,
         });
         return;
       }
@@ -123,12 +122,13 @@ const EnterCode = () => {
         visible: true,
         isSuccess: false,
         title: '인증 실패',
-        bodyLines: [msg, '코드를 다시 확인해주세요.'],
+        body: `${msg} 코드를 다시 확인해주세요.`,
       });
     } finally {
       setIsVerifying(false);
     }
   };
+
   const onSelectRelation = (value: RelationType) => {
     setRelationType(value);
     if (value !== 'CUSTOM') setCustomRelation('');
@@ -149,7 +149,7 @@ const EnterCode = () => {
         visible: true,
         isSuccess: true,
         title: '연동 성공',
-        bodyLines: ['운전자 연동이 완료되었습니다.'],
+        body: '운전자 연동이 완료되었습니다.',
       });
     } catch (e: any) {
       const msg =
@@ -161,7 +161,7 @@ const EnterCode = () => {
         visible: true,
         isSuccess: false,
         title: '연동 실패',
-        bodyLines: [msg, '잠시 후 다시 시도해주세요.'],
+        body: `${msg} '잠시 후 다시 시도해주세요.`,
       });
     }
   };
@@ -321,7 +321,7 @@ const EnterCode = () => {
         <SimpleInfoModal
           visible={resultModal.visible}
           title={resultModal.title}
-          bodyLines={resultModal.bodyLines}
+          body={resultModal.body}
           confirmText="확인"
           onConfirm={onResultConfirm}
           onRequestClose={closeResultModal}

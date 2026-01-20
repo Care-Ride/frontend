@@ -9,7 +9,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 const BasicRuleDevice = () => {
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
-  const { destination, lat, lon } = route.params || {};
+  const { curLat, curLon } = route.params || {};
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
@@ -26,9 +26,8 @@ const BasicRuleDevice = () => {
           }}
           onPressNext={() =>
             navigation.navigate('ReactivityTest', {
-              destination,
-              lat,
-              lon,
+              curLat,
+              curLon,
             } as never)
           }
           prevText="뒤로가기"

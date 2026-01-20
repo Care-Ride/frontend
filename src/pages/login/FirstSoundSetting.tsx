@@ -11,7 +11,6 @@ import StepIndicator from '../../components/login/StepIndicator';
 import BottomStepButtons from '../../components/common/BottomStepButton';
 
 import { playTestSound, initSounds } from '../../utils/soundPlayer';
-import { postDeviceSetting } from '../../api/member-controller';
 
 const FirstSoundSetting = () => {
   const route = useRoute<any>();

@@ -34,21 +34,18 @@ type Tokens = {
 
 export type AuthState = {
   provider: Provider | null;
-  // user: ServerUser | null;
   tokens: Tokens | null;
   hasDeviceSetting: boolean | null;
 };
 
 type AuthContextType = {
   state: AuthState;
-  //signInWithPassword: (email: string, password: string) => Promise<void>;
   signInWithOAuth: (
     provider: Extract<Provider, 'google' | 'kakao'>,
   ) => Promise<{ provider: 'google' | 'kakao'; data: any }>;
   setFromServer: (
     provider: Provider,
     payload: {
-      //user: ServerUser;
       accessToken: string;
       hasDeviceSetting: boolean;
     },
@@ -78,8 +75,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     await Keychain.setGenericPassword('auth', JSON.stringify(next), {
       service: STORAGE_SERVICE,
     });
-    // await AsyncStorage.setItem('userId', next.user?.id || '');
-    // await AsyncStorage.setItem('nickname', next.user?.nickname || '');
 
     setAuthState(next);
   };
@@ -119,7 +114,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     async (
       provider: Provider,
       payload: {
-        //user: ServerUser;
         accessToken: string;
         hasDeviceSetting: boolean;
       },
@@ -132,7 +126,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
       const next: AuthState = {
         provider,
-        //user: payload.user,
         tokens: { accessToken: payload.accessToken, expiresAt: expMs },
         hasDeviceSetting: payload.hasDeviceSetting,
       };
@@ -142,11 +135,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     },
     [queryClient],
   );
-
-  // const signInWithPassword = async (email: string, password: string) => {
-  //   const { data } = await api.post('/auth/login', { email, password });
-  //   await setFromServer('password', data);
-  // };
 
   const signInWithOAuth = async (
     provider: 'google' | 'kakao',
@@ -162,7 +150,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
       const body: Record<string, string> = {};
       if (result.idToken) body.idToken = result.idToken;
-      // else if (result.accessToken) body.accessToken = result.accessToken;
       const { data } = await api.post('/auth/google', {
         idToken: result.idToken,
       });
@@ -215,7 +202,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     <AuthContext.Provider
       value={{
         state: authState,
-        // signInWithPassword,
         signInWithOAuth,
         setFromServer,
         signOut,
