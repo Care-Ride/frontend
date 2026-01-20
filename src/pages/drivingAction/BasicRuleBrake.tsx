@@ -11,7 +11,7 @@ import BottomStepButtons from '../../components/common/BottomStepButton';
 const BasicRuleBrake = () => {
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
-  const { destination, lat, lon } = route.params || {};
+  const { curLat, curLon } = route.params || {};
 
   const [selected, setSelected] = useState<'left' | 'right' | null>(null);
 
@@ -63,9 +63,8 @@ const BasicRuleBrake = () => {
             }}
             onPressNext={() =>
               navigation.navigate('ReactivityTest', {
-                destination,
-                lat,
-                lon,
+                curLat,
+                curLon,
               } as never)
             }
             prevText="뒤로가기"

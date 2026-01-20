@@ -2,39 +2,19 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import Search from '../../assets/common/search.svg';
 import BackButton from '../../components/common/BackButton';
-import { postDriveStart } from '../../api/driving-controller';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { postDriveDanger } from '../../api/driving-controller';
 
 const ReadyDriving = () => {
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
-  const { lat, lon } = route.params || {};
-  const [isNightDrive, setIsNightDrive] = useState(false);
-  const [weather, setWeather] = useState('');
-
-  const createDriveDanger = async () => {
-    try {
-      const response = await postDriveDanger(lat, lon);
-      setIsNightDrive(response?.data.data.isNightDrive);
-      setWeather(response?.data.data.weather);
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   const handleStartDriving = async () => {
-    await createDriveDanger();
-    navigation.navigate(
-      'DrivingDanger' as never,
-      { destination, lat, lon, isNightDrive, weather } as never,
-    );
+    navigation.navigate('DrivingDanger' as never);
   };
 
   const selectedDestination = route.params?.destination ?? '';
-  const [destination, setDestination] = useState(selectedDestination);
+
   useEffect(() => {
     const checkToken = async () => {
       const token = await AsyncStorage.getItem('accessToken');
@@ -52,7 +32,7 @@ const ReadyDriving = () => {
         <DestinationContainer>
           <DestinationText>목적지</DestinationText>
           <DestinationInputWrapper>
-            <DestinationText>{destination}</DestinationText>
+            <DestinationText>{selectedDestination}</DestinationText>
           </DestinationInputWrapper>
         </DestinationContainer>
         <StartButton onPress={handleStartDriving} accessibilityRole="button">
