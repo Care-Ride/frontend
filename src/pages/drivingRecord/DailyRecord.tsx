@@ -73,7 +73,7 @@ const DailyRecord = () => {
   const readDailyDrive = async () => {
     try {
       const response = await getDailyDrive(date);
-      const driveList = response.data.data.drive;
+      const driveList = response?.data.data.drive;
       setRows(mapDriveToRows(driveList));
     } catch (err) {
       console.error(err);
