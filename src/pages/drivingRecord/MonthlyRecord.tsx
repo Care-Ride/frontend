@@ -21,8 +21,6 @@ type MonthlyData = {
 };
 
 const MonthlyRecord = () => {
-  const [score, setScore] = useState(93);
-  const [name, setName] = useState('이승진');
   const [yearMonth, setYearMonth] = useState(getCurrentYearMonth());
   const [monthlyData, setMonthlyData] = useState<MonthlyData | null>(null);
   const currentYearMonth = getCurrentYearMonth();
@@ -73,7 +71,7 @@ const MonthlyRecord = () => {
       ),
     },
     {
-      label: '급감속',
+      label: '급제동',
       right: (
         <RatingPill>
           {[1, 2, 3, 4, 5].map(i =>
@@ -94,7 +92,7 @@ const MonthlyRecord = () => {
           <Score>{monthlyData?.avgScore}점</Score>
           <Description>
             {monthlyData?.avgScore != null && monthlyData.avgScore >= 80
-              ? `${formatYearMonthKR} 모범 운전자입니다`
+              ? `${yearMonthKR} 모범 운전자입니다`
               : '안전운전, 조금 더 분발하세요!'}
           </Description>
         </ScoreContainer>
