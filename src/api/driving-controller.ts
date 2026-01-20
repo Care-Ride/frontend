@@ -12,13 +12,12 @@ export const postDriveStart = async (lat: string, lon: string) => {
 
 export const postDriveEnd = async (
   driveId: string,
-  totalDistance: number,
+  totalDistance: string,
   hardAccelCount: number,
   hardDecelCount: number,
   suddenStopCount: number,
-  score: number,
-  lat: string,
-  lon: string,
+  lat: number,
+  lon: number,
 ) => {
   try {
     const response = await api.post(`/api/drive/end`, {
@@ -27,17 +26,17 @@ export const postDriveEnd = async (
       hardAccelCount,
       hardDecelCount,
       suddenStopCount,
-      score,
       lat,
       lon,
     });
+    console.log(response, '운전 시작');
     return response;
   } catch (err: any) {
     console.error('운전 종료 실패', err?.response?.data || err.message || err);
   }
 };
 
-export const postDriveDanger = async (lat: string, lon: string) => {
+export const postDriveDanger = async (lat: number, lon: number) => {
   try {
     const response = await api.post(`/api/drive/danger`, { lat, lon });
     return response;
