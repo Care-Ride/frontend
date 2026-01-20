@@ -41,6 +41,7 @@ const FontSetting = () => {
         />
         <LevelSetting
           level={localLevel}
+          levelControl={true}
           onChangeLevel={setLocalLevel}
           onTestPress={handleTest}
           preview={
