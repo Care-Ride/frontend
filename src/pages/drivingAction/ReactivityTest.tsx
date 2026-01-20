@@ -10,7 +10,7 @@ import StartButton from '../../components/common/StartButton';
 const ReactivityTest = () => {
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
-  const { destination, lat, lon } = route.params || {};
+  const { currentLat, currentLon } = route.params || {};
 
   type Phase = 'intro' | 'waiting' | 'go' | 'result';
 
@@ -70,7 +70,7 @@ const ReactivityTest = () => {
 
   const createDriving = async () => {
     try {
-      const response = await postDriveStart(lat, lon);
+      const response = await postDriveStart(currentLat, currentLon);
 
       const driveId = response?.data?.data?.driveId;
 
@@ -82,9 +82,8 @@ const ReactivityTest = () => {
 
       navigation.navigate('DrivingScreen', {
         driveId,
-        destination,
-        lat,
-        lon,
+        currentLat,
+        currentLon,
       } as never);
     } catch (e) {
       console.log('운전 시작 실패:', e);
@@ -139,6 +138,7 @@ const ReactivityTest = () => {
           isSlow ? (
             <BottomStepButtons
               onPressPrev={() => navigation.goBack()}
+              onPressNext={createDriving}
               prevText="이전"
               nextText="운전하기"
             />
@@ -176,13 +176,13 @@ const Title = styled.Text`
 `;
 
 const Description = styled.Text`
-  width: 75%;
+  width: 80%;
   align-self: center;
-  font-size: ${({ theme }) => theme.scaleFont(20 * theme.fontScale)};
+  font-size: ${({ theme }) => theme.scaleFont(25 * theme.fontScale)};
   font-weight: 500;
   color: #111111;
   text-align: center;
-  line-height: 35px;
+  line-height: 40px;
   margin-bottom: 40px;
   margin-top: 100px;
 `;
