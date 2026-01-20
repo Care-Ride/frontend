@@ -4,6 +4,7 @@ import BackButton from '../../components/common/BackButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import DailyList from '../../components/common/DailyList';
 import { getDailyDrive } from '../../api/driving-controller';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
 
 interface DailyDriveRow {
   id: number;
@@ -24,7 +25,6 @@ const DailyRecord = () => {
     const dd = String(now.getDate()).padStart(2, '0');
     return `${yyyy}-${mm}-${dd}`;
   };
-  const [rows, setRows] = useState<DailyDriveRow[]>([]);
   const [date, setDate] = useState(getTodayISO());
 
   const month = useMemo(() => {
@@ -70,19 +70,16 @@ const DailyRecord = () => {
     });
   };
 
-  const readDailyDrive = async () => {
-    try {
+  const { data: rows = [] } = useQuery({
+    queryKey: ['dailyDrive', date],
+    queryFn: async () => {
       const response = await getDailyDrive(date);
-      const driveList = response?.data.data.drive;
-      setRows(mapDriveToRows(driveList));
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  useEffect(() => {
-    readDailyDrive();
-  }, [date]);
+      const driveList = response?.data?.data?.drive ?? [];
+      return mapDriveToRows(driveList);
+    },
+    enabled: Boolean(date), // date가 있을 때만 실행
+    placeholderData: keepPreviousData,
+  });
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
