@@ -1,10 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useRoute } from '@react-navigation/native';
 import { LevelSetting } from '../../components/common/LevelSetting';
-import Vibration from '../../assets/setting/vibration.svg';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BackButton from '../../components/common/BackButton';
-import { SmallBottomButton } from '../../components/common/BottomButton';
 import { useNavigation } from '@react-navigation/native';
 import styled, { useTheme } from 'styled-components/native';
 import SettingText from '../../components/common/SettingText';
@@ -27,7 +24,6 @@ const FirstFontSetting = () => {
   const previewFontSize = theme.scaleFont(
     16 * (FONT_LEVEL_SCALE[localLevel] ?? 1),
   );
-  const handleTest = () => {};
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
@@ -42,7 +38,6 @@ const FirstFontSetting = () => {
           level={localLevel}
           levelControl={true}
           onChangeLevel={setLocalLevel}
-          onTestPress={handleTest}
           preview={
             <PreviewBox>
               <PreviewText style={{ fontSize: previewFontSize }}>
@@ -56,9 +51,10 @@ const FirstFontSetting = () => {
 
         <BottomStepButtons
           onPressPrev={() => {}}
-          onPressNext={() =>
-            navigation.navigate('FirstSoundSetting', { localLevel })
-          }
+          onPressNext={() => {
+            setGlobalLevel(localLevel);
+            navigation.navigate('FirstSoundSetting', { localLevel });
+          }}
           prevText="뒤로가기"
           nextText="다음"
         />

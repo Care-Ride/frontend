@@ -49,7 +49,6 @@ const MonthlyList: React.FC<MonthlyListProps> = ({
       <DashedDivider />
       {rows.map((row, index) => (
         <RowWrapper key={index}>
-          {/* {index === 0 && <DashedDivider />} */}
           <OptionRow>
             <OptionLabel>{row.label}</OptionLabel>
             <RightContainer>{row.right}</RightContainer>

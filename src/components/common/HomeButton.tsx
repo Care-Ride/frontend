@@ -10,14 +10,14 @@ const HomeButton = () => {
   return (
     <BackButtonContainer>
       <TouchableOpacity
-        onPress={() => navigation.navigate('Home')}
+        onPress={() => navigation.navigate('Home' as never)}
         hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
         style={{ padding: 0, alignItems: 'center' }}
         accessibilityRole="button"
         accessibilityLabel="홈으로 가기"
       >
         <Logo width={69} height={29.77} />
-        <Text>첫 화면으로</Text>
+        <Text>홈 화면으로</Text>
       </TouchableOpacity>
     </BackButtonContainer>
   );
