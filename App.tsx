@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback, useRef } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
-import { ThemeProvider } from 'styled-components/native';
 import { FontLevelProvider } from './src/FontLevelProvider';
 import { Platform, PermissionsAndroid } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
@@ -29,6 +29,16 @@ async function requestLocationPermission(): Promise<boolean> {
 
   return granted === PermissionsAndroid.RESULTS.GRANTED;
 }
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      staleTime: 30 * 1000,
+      gcTime: 5 * 60 * 1000,
+    },
+  },
+});
 
 const Gate: React.FC = () => {
   const { state } = useAuth();
@@ -78,9 +88,11 @@ export default function App() {
     <SafeAreaProvider>
       {/* <JotaiProvider store={store}> */}
       <AuthProvider>
-        <FontLevelProvider>
-          <Gate />
-        </FontLevelProvider>
+        <QueryClientProvider client={queryClient}>
+          <FontLevelProvider>
+            <Gate />
+          </FontLevelProvider>
+        </QueryClientProvider>
       </AuthProvider>
       {/* </JotaiProvider> */}
     </SafeAreaProvider>
